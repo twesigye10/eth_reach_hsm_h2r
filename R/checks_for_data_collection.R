@@ -29,12 +29,29 @@ df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
 
 checks_output <- list()
 
-# check duplicate uuids
+# Time checks -------------------------------------------------------------
 
-# outliers
+# Time interval for the survey
+min_time_of_survey <- 20
+max_time_of_survey <- 120
+
+df_c_survey_time <-  check_survey_time(input_tool_data = df_tool_data, 
+                                       input_min_time = min_time_of_survey, 
+                                       input_max_time = max_time_of_survey)
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_survey_time")
+
+# duplicate uuids ---------------------------------------------------------
 
 
-# other_specify
+
+# outliers ----------------------------------------------------------------
+
+
+
+
+# other_specify -----------------------------------------------------------
+
 df_others_data <- extract_other_specify_data(input_tool_data = df_tool_data, 
                                              input_point_id_col = "point_number", 
                                              input_location_col = "loc_zone",
@@ -43,5 +60,6 @@ df_others_data <- extract_other_specify_data(input_tool_data = df_tool_data,
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_others_data")
 
+# logical checks ----------------------------------------------------------
 
-# logical checks
+
