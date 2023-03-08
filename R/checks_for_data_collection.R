@@ -12,7 +12,6 @@ df_tool_data <- readxl::read_excel("inputs/ETH2002_H2R_data.xlsx") |>
          i.check.enumerator_id = enumerator_id,
          i.check.district_name = ifelse(is.na(loc_zone), loc_zone_other, loc_zone),
          i.check.loc_zone = ifelse(is.na(loc_zone), loc_zone_other, loc_zone),
-         int.loc_zone = ifelse(is.na(loc_zone), loc_zone_other, loc_zone),
          i.check.point_number = "",
          point_number = "",
          start = as_datetime(start),
@@ -38,7 +37,7 @@ checks_output <- list()
 # other_specify
 df_others_data <- extract_other_specify_data(input_tool_data = df_tool_data, 
                                              input_point_id_col = "point_number", 
-                                             input_location_col = "int.loc_zone",
+                                             input_location_col = "loc_zone",
                                              input_survey = df_survey,  
                                              input_choices = df_choices)
 
