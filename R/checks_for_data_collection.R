@@ -55,7 +55,7 @@ df_c_outliers <- supporteR::check_outliers_cleaninginspector(input_tool_data = d
                                                              input_location_col = "loc_zone",
                                                              input_point_id_col = "point_number")
 
-add_checks_data_to_list(input_list_name = "checks_output",input_df_name = "df_c_outliers")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_outliers")
 
 
 # other_specify -----------------------------------------------------------
