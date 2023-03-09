@@ -7,15 +7,12 @@ library(supporteR)
 # read data ---------------------------------------------------------------
 
 df_tool_data <- readxl::read_excel("inputs/ETH2002_H2R_data.xlsx") |>  
-  mutate(#i.check.uuid = `_uuid`,
-         # i.check.start_date = as_date(start),
-         # i.check.enumerator_id = enumerator_id,
-         # i.check.district_name = ifelse(is.na(loc_zone), loc_zone_other, loc_zone),
-         # i.check.loc_zone = ifelse(is.na(loc_zone), loc_zone_other, loc_zone),
-         # i.check.point_number = "",
-         point_number = "",
+  mutate(point_number = "",
          start = as_datetime(start),
-         end = as_datetime(end))
+         end = as_datetime(end)) |> 
+  checks_add_extra_cols(input_enumerator_id_col = "enumerator_id",
+                        input_location_col = "loc_zone",
+                        input_point_id_col = "point_number")
 
 # tool
 
@@ -28,6 +25,29 @@ df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
 # checks ------------------------------------------------------------------
 
 checks_output <- list()
+
+
+# testing data ------------------------------------------------------------
+
+df_testing_data <- df_tool_data %>% 
+  filter(i.check.start_date < as_date("2023-03-08")) %>% 
+  mutate(i.check.type = "remove_survey",
+         i.check.name = "",
+         i.check.current_value = "",
+         i.check.value = "",
+         i.check.issue_id = "logic_c_testing_data",
+         i.check.issue = "testing_data",
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "1",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "") %>% 
+  dplyr::select(starts_with("i.check.")) %>% 
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_testing_data")
 
 # Time checks -------------------------------------------------------------
 
