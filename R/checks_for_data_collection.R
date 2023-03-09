@@ -55,7 +55,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_t
 min_time_of_survey <- 15
 max_time_of_survey <- 120
 
-df_c_survey_time <-  check_survey_time(input_tool_data = df_tool_data, 
+df_c_survey_time <-  supporteR::check_survey_time(input_tool_data = df_tool_data, 
                                        input_enumerator_id_col = "enumerator_id",
                                        input_location_col = "loc_zone",
                                        input_point_id_col = "point_number",
@@ -66,7 +66,8 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c
 
 # check duplicate uuids ---------------------------------------------------
 
-df_c_duplicate_uuid <-  checks_duplicate_uuids(input_tool_data = df_tool_data)
+df_c_duplicate_uuid <-  supporteR::checks_duplicate_uuids(input_tool_data = df_tool_data,
+                                                          input_point_id_col = "point_number")
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_duplicate_uuid")
 
@@ -81,11 +82,12 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c
 
 # other_specify -----------------------------------------------------------
 
-df_others_data <- extract_other_specify_data(input_tool_data = df_tool_data, 
-                                             input_point_id_col = "point_number", 
-                                             input_location_col = "loc_zone",
-                                             input_survey = df_survey,  
-                                             input_choices = df_choices)
+df_others_data <- supporteR::extract_other_specify_data(input_tool_data = df_tool_data, 
+                                                        input_enumerator_id_col = "enumerator_id",
+                                                        input_point_id_col = "point_number", 
+                                                        input_location_col = "loc_zone",
+                                                        input_survey = df_survey,  
+                                                        input_choices = df_choices)
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_others_data")
 
