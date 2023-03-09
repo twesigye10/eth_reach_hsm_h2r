@@ -64,9 +64,11 @@ df_c_survey_time <-  check_survey_time(input_tool_data = df_tool_data,
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_survey_time")
 
-# duplicate uuids ---------------------------------------------------------
+# check duplicate uuids ---------------------------------------------------
 
+df_c_duplicate_uuid <-  checks_duplicate_uuids(input_tool_data = df_tool_data)
 
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_duplicate_uuid")
 
 # outliers ----------------------------------------------------------------
 
@@ -76,7 +78,6 @@ df_c_outliers <- supporteR::check_outliers_cleaninginspector(input_tool_data = d
                                                              input_point_id_col = "point_number")
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_outliers")
-
 
 # other_specify -----------------------------------------------------------
 
