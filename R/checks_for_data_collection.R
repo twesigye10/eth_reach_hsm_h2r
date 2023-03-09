@@ -32,7 +32,7 @@ checks_output <- list()
 # Time checks -------------------------------------------------------------
 
 # Time interval for the survey
-min_time_of_survey <- 20
+min_time_of_survey <- 15
 max_time_of_survey <- 120
 
 df_c_survey_time <-  check_survey_time(input_tool_data = df_tool_data, 
