@@ -236,6 +236,26 @@ df_logic_c_dk_loc_but_loc_reason_6 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_dk_loc_but_loc_reason_6")
 
+# logic_c_dk_people_cannot_leave_but_reasons_7
+df_logic_c_dk_people_cannot_leave_but_reasons_7 <- df_tool_data |> 
+  filter(str_detect(string = which_people_primarily_cannot_leave, pattern = "dk"),
+         !str_detect(string = primary_reasons_people_cannot_leave, pattern = "dk")) |> 
+  mutate(i.check.type = "remove_option",
+         i.check.name = "which_people_primarily_cannot_leave",
+         i.check.current_value = which_people_primarily_cannot_leave,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_dk_people_cannot_leave_but_reasons_7",
+         i.check.issue = glue("which_people_primarily_cannot_leave: {which_people_primarily_cannot_leave} but primary_reasons_people_cannot_leave: {primary_reasons_people_cannot_leave}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_dk_people_cannot_leave_but_reasons_7")
 
 
 # combined  checks --------------------------------------------------------
