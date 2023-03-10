@@ -173,6 +173,48 @@ df_logic_c_displaced_and_cannot_leave_settlement_4 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_displaced_and_cannot_leave_settlement_4")
 
+# logic_c_all_people_have_left_but_some_cannot_leave_5a
+df_logic_c_all_people_have_left_but_some_cannot_leave_5a <- df_tool_data |> 
+  filter(str_detect(string = displacement_population_groups, pattern = "all_people_have_left_the_settlement"),
+         !str_detect(string = which_people_primarily_cannot_leave, pattern = "all_people_have_left_the_settlement")) |> 
+  mutate(i.check.type = "remove_option",
+         i.check.name = "displacement_population_groups",
+         i.check.current_value = displacement_population_groups,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_all_people_have_left_but_some_cannot_leave_5a",
+         i.check.issue = glue("displacement_population_groups: {displacement_population_groups} and which_people_primarily_cannot_leave: {which_people_primarily_cannot_leave}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_all_people_have_left_but_some_cannot_leave_5a")
+
+# logic_c_all_people_have_left_but_some_will_move_5b
+df_logic_c_all_people_have_left_but_some_will_move_5b <- df_tool_data |> 
+  filter(str_detect(string = displacement_population_groups, pattern = "all_people_have_left_the_settlement"),
+         !str_detect(string = which_people_will_move, pattern = "all_people_have_left_the_settlement")) |> 
+  mutate(i.check.type = "remove_option",
+         i.check.name = "displacement_population_groups",
+         i.check.current_value = displacement_population_groups,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_all_people_have_left_but_some_will_move_5b",
+         i.check.issue = glue("displacement_population_groups: {displacement_population_groups} and which_people_will_move: {which_people_will_move}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_all_people_have_left_but_some_will_move_5b")
+
 
 
 # combined  checks --------------------------------------------------------
