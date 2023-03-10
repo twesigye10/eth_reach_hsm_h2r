@@ -92,8 +92,27 @@ df_others_data <- supporteR::extract_other_specify_data(input_tool_data = df_too
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_others_data")
 
 # logical checks ----------------------------------------------------------
+# logic_c_enough_water_but_schedule_change_1
+df_logic_c_enough_water_but_schedule_change_1 <- df_tool_data |> 
+  filter(freq_not_enough_water_for_all_household_needs %in% c("never"),
+         freq_change_schedules_due_to_problems_with_your_water_situation %in% c("rarely", "sometimes", "often", "always")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "freq_not_enough_water_for_all_household_needs",
+         i.check.current_value = freq_not_enough_water_for_all_household_needs,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_enough_water_but_schedule_change_1",
+         i.check.issue = glue("freq_not_enough_water_for_all_household_needs: {freq_not_enough_water_for_all_household_needs}, but freq_change_schedules_due_to_problems_with_your_water_situation: {freq_change_schedules_due_to_problems_with_your_water_situation}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "") |> 
+  batch_select_rename()
 
-
+add_checks_data_to_list(input_list_name = "checks_output", 
+                        input_df_name = "df_logic_c_enough_water_but_schedule_change_1")
 
 
 # combined  checks --------------------------------------------------------
