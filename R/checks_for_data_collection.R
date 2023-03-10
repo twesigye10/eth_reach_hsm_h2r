@@ -278,6 +278,26 @@ df_logic_c_dk_people_will_leave_but_reasons_8 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_dk_people_will_leave_but_reasons_8")
 
+# logic_c_dk_people_will_return_but_reasons_9
+df_logic_c_dk_people_will_return_but_reasons_9 <- df_tool_data |> 
+  filter(str_detect(string = which_people_will_be_returning, pattern = "dk"),
+         !str_detect(string = main_reasons_for_return, pattern = "dk")) |> 
+  mutate(i.check.type = "remove_option",
+         i.check.name = "which_people_will_be_returning",
+         i.check.current_value = which_people_will_be_returning,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_dk_people_will_return_but_reasons_9",
+         i.check.issue = glue("which_people_will_be_returning: {which_people_will_be_returning} but main_reasons_for_return: {main_reasons_for_return}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_dk_people_will_return_but_reasons_9")
 
 
 
