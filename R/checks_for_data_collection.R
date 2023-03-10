@@ -215,6 +215,27 @@ df_logic_c_all_people_have_left_but_some_will_move_5b <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_all_people_have_left_but_some_will_move_5b")
 
+# logic_c_dk_loc_but_loc_reason_6
+df_logic_c_dk_loc_but_loc_reason_6 <- df_tool_data |> 
+  filter(if_all(c(destination_region, destination_zone, destination_woreda, destination_kebele), ~ .x == "dk"), 
+         !main_reason_choosing_destination %in% c("dk", "dwa")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "main_reason_choosing_destination",
+         i.check.current_value = main_reason_choosing_destination,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_dk_loc_but_loc_reason_6",
+         i.check.issue = glue("main_reason_choosing_destination: {main_reason_choosing_destination} and destination_region: {destination_region},  destination_zone: {destination_zone}, destination_woreda: {destination_woreda}, destination_kebele: {destination_kebele}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_dk_loc_but_loc_reason_6")
+
 
 
 # combined  checks --------------------------------------------------------
