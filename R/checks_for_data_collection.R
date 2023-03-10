@@ -111,8 +111,28 @@ df_logic_c_enough_water_but_schedule_change_1 <- df_tool_data |>
          i.check.so_sm_choices = "") |> 
   batch_select_rename()
 
-add_checks_data_to_list(input_list_name = "checks_output", 
-                        input_df_name = "df_logic_c_enough_water_but_schedule_change_1")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_enough_water_but_schedule_change_1")
+
+# logic_c_displacement_but_no_freq_2
+df_logic_c_displacement_but_no_freq_2 <- df_tool_data |> 
+  filter(any_displacement %in% c('yes'), freq_displacements == 0) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "any_displacement",
+         i.check.current_value = any_displacement,
+         i.check.value = "no",
+         i.check.issue_id = "logic_c_displacement_but_no_freq_2",
+         i.check.issue = glue("any_displacement: {any_displacement}, but freq_displacements: {freq_displacements}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_displacement_but_no_freq_2")
+
 
 
 # combined  checks --------------------------------------------------------
