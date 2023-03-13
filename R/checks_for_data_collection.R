@@ -518,6 +518,26 @@ df_logic_c_logic_c_time_fetch_short_but_waterpoints_far_20 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_logic_c_time_fetch_short_but_waterpoints_far_20")
 
+# logic_c_enough_water_but_no_water_drinking_21
+df_logic_c_enough_water_but_no_water_drinking_21 <- df_tool_data |> 
+  filter(proportion_hh_enough_water_cooking_bathing_washing %in%  c('all_or_almost_all_76_100'),
+         proportion_hh_enough_water_drinking %in%  c('none')) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "proportion_hh_enough_water_cooking_bathing_washing",
+         i.check.current_value = proportion_hh_enough_water_cooking_bathing_washing,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_enough_water_but_no_water_drinking_21",
+         i.check.issue = glue("proportion_hh_enough_water_cooking_bathing_washing: {proportion_hh_enough_water_cooking_bathing_washing} but proportion_hh_enough_water_drinking: {proportion_hh_enough_water_drinking}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_enough_water_but_no_water_drinking_21")
 
 
 
