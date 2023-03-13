@@ -44,7 +44,7 @@ df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
 df_cleaning_log_main <-  df_cleaning_log %>% 
   filter(is.na(sheet))
 
-df_cleaned_data <- implement_cleaning_support(input_df_raw_data = df_raw_data,
+df_cleaned_data <- cleaning_support(input_df_raw_data = df_raw_data,
                                               input_df_survey = df_survey,
                                               input_df_choices = df_choices,
                                               input_df_cleaning_log = df_cleaning_log_main) %>% 
