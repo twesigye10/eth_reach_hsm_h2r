@@ -560,6 +560,28 @@ df_logic_c_no_water_drinking_but_no_water_problems_22 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_no_water_drinking_but_no_water_problems_22")
 
+# logic_c_access_sanitation_but_open_defecation_23
+df_logic_c_access_sanitation_but_open_defecation_23 <- df_tool_data |> 
+  filter(proportion_hh_access_functioning_sanitation_facility %in% c("all_or_almost_all_76_100"),
+         proportion_hh_engaged_in_open_defecation %in% c("all_or_almost_all_76_100")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "proportion_hh_access_functioning_sanitation_facility",
+         i.check.current_value = proportion_hh_access_functioning_sanitation_facility,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_access_sanitation_but_open_defecation_23",
+         i.check.issue = glue("proportion_hh_access_functioning_sanitation_facility: {proportion_hh_access_functioning_sanitation_facility} but proportion_hh_engaged_in_open_defecation: {proportion_hh_engaged_in_open_defecation}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_access_sanitation_but_open_defecation_23")
+
+
 
 
 
