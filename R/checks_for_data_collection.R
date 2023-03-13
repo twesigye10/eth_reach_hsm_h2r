@@ -390,6 +390,26 @@ df_logic_c_no_inadequate_shelter_but_shelters_destroyed_14 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
+# logic_c_time_short_but_health_facility_far_15
+df_logic_c_time_short_but_health_facility_far_15 <- df_tool_data |> 
+  filter(time_to_nearest_healthcare_facility %in% c("under_30_minutes"),
+         str_detect(string = main_barriers_to_access_health_care, pattern = "health_facility_is_too_far_away")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "time_to_nearest_healthcare_facility",
+         i.check.current_value = time_to_nearest_healthcare_facility,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_time_short_but_health_facility_far_15",
+         i.check.issue = glue("time_to_nearest_healthcare_facility: {time_to_nearest_healthcare_facility} but main_barriers_to_access_health_care: {main_barriers_to_access_health_care}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+
 
 
 
