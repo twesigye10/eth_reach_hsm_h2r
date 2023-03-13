@@ -455,6 +455,48 @@ df_logic_c_time_short_but_school_far_17 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_17")
 
+# logic_c_time_short_but_school_far_18
+df_logic_c_time_short_but_school_far_18 <- df_tool_data |> 
+  filter(time_to_closest_functional_secondary_school %in% c("under_30_minutes"),
+         main_barrier_accessing_education_girls %in% c("distance_to_school_too_far")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "time_to_closest_functional_secondary_school",
+         i.check.current_value = time_to_closest_functional_secondary_school,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_time_short_but_school_far_18",
+         i.check.issue = glue("time_to_closest_functional_secondary_school: {time_to_closest_functional_secondary_school} but main_barrier_accessing_education_girls: {main_barrier_accessing_education_girls}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_18")
+
+# logic_c_time_short_but_school_far_19
+df_logic_c_time_short_but_school_far_19 <- df_tool_data |> 
+  filter(time_to_closest_functional_secondary_school %in% c("under_30_minutes"),
+         main_barrier_accessing_education_boys %in% c("distance_to_school_too_far")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "time_to_closest_functional_secondary_school",
+         i.check.current_value = time_to_closest_functional_secondary_school,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_time_short_but_school_far_19",
+         i.check.issue = glue("time_to_closest_functional_secondary_school: {time_to_closest_functional_secondary_school} but main_barrier_accessing_education_boys: {main_barrier_accessing_education_boys}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_19")
+
 
 
 
