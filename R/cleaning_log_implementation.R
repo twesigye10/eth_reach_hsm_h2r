@@ -16,3 +16,18 @@ df_cleaning_log <- read_csv("inputs/combined_checks_h2r_eth.csv", col_types = co
   mutate(value = ifelse(value %in% c("blank"), NA, value),
          relevant = NA) %>%
   select(uuid, type, name, value, issue_id, sheet, index, relevant, issue)
+
+# raw data
+data_path <- "inputs/ETH2002_H2R_data.xlsx"
+
+cols_to_escape <- c("index", "start", "end", "today", "starttime",	"endtime", "_submission_time", "_submission__submission_time",
+                    "date_last_in_settlement", "date_arrived_current_location", "crops_destroyed_by_conflict",
+                    "when_schools_last_opened")
+
+data_nms <- names(readxl::read_excel(path = data_path, n_max = 2000))
+c_types <- ifelse(str_detect(string = data_nms, pattern = "_other$"), "text", "guess")
+
+df_raw_data <- readxl::read_excel(path = data_path, col_types = c_types) %>% 
+  mutate(across(.cols = -c(contains(cols_to_escape)), 
+                .fns = ~ifelse(str_detect(string = ., 
+                                          pattern = fixed(pattern = "N/A", ignore_case = TRUE)), "NA", .)))
