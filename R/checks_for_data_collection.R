@@ -299,7 +299,26 @@ df_logic_c_dk_people_will_return_but_reasons_9 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_dk_people_will_return_but_reasons_9")
 
+# logic_c_insufficient_food_but_no_coping_10
+df_logic_c_insufficient_food_but_no_coping_10 <- df_tool_data |> 
+  filter(before_you_left_people_access_sufficient_food %in%  c('no'),
+         str_detect(string = not_enough_food_or_money_to_buy_food, pattern = "none")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "before_you_left_people_access_sufficient_food",
+         i.check.current_value = before_you_left_people_access_sufficient_food,
+         i.check.value = "yes",
+         i.check.issue_id = "logic_c_insufficient_food_but_no_coping_10",
+         i.check.issue = glue("before_you_left_people_access_sufficient_food: {before_you_left_people_access_sufficient_food} but not_enough_food_or_money_to_buy_food: {not_enough_food_or_money_to_buy_food}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "") |> 
+  batch_select_rename()
 
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_insufficient_food_but_no_coping_10")
 
 
 
