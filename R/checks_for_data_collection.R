@@ -416,7 +416,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 # logic_c_time_short_but_school_far_16
 df_logic_c_time_short_but_school_far_16 <- df_tool_data |> 
   filter(time_to_closest_functional_primary_school %in% c("under_30_minutes"),
-         str_detect(string = main_barrier_accessing_education_girls, pattern = "distance_to_school_too_far")) |> 
+         main_barrier_accessing_education_girls %in% c("distance_to_school_too_far")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "time_to_closest_functional_primary_school",
          i.check.current_value = time_to_closest_functional_primary_school,
@@ -437,7 +437,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logi
 # logic_c_time_short_but_school_far_17
 df_logic_c_time_short_but_school_far_17 <- df_tool_data |> 
   filter(time_to_closest_functional_primary_school %in% c("under_30_minutes"),
-         str_detect(string = main_barrier_accessing_education_boys, pattern = "distance_to_school_too_far")) |> 
+         main_barrier_accessing_education_boys %in% c("distance_to_school_too_far")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "time_to_closest_functional_primary_school",
          i.check.current_value = time_to_closest_functional_primary_school,
