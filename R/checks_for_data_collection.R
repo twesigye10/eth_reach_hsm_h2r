@@ -390,6 +390,8 @@ df_logic_c_no_inadequate_shelter_but_shelters_destroyed_14 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_no_inadequate_shelter_but_shelters_destroyed_14")
+
 # logic_c_time_short_but_health_facility_far_15
 df_logic_c_time_short_but_health_facility_far_15 <- df_tool_data |> 
   filter(time_to_nearest_healthcare_facility %in% c("under_30_minutes"),
@@ -408,6 +410,9 @@ df_logic_c_time_short_but_health_facility_far_15 <- df_tool_data |>
          i.check.adjust_log = "",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_time_short_but_health_facility_far_15")
+
 
 
 
