@@ -497,6 +497,26 @@ df_logic_c_time_short_but_school_far_19 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_19")
 
+# logic_c_time_fetch_short_but_waterpoints_far_20
+df_logic_c_logic_c_time_fetch_short_but_waterpoints_far_20 <- df_tool_data |> 
+  filter(time_to_fetch_water_and_return %in%  c('less_than_5_min'),
+         str_detect(string = main_problems_accessing_water, pattern = "waterpoints_are_too_far")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "time_to_fetch_water_and_return",
+         i.check.current_value = time_to_fetch_water_and_return,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_time_fetch_short_but_waterpoints_far_20",
+         i.check.issue = glue("time_to_fetch_water_and_return: {time_to_fetch_water_and_return} but main_problems_accessing_water: {main_problems_accessing_water}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_logic_c_time_fetch_short_but_waterpoints_far_20")
 
 
 
