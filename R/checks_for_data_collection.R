@@ -749,8 +749,26 @@ df_logic_c_not_feel_safe_but_boys_safety_concerns_none_31 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_not_feel_safe_but_boys_safety_concerns_none_31")
 
+# logic_c_humanitarian_food_but_no_assistance_32
+df_logic_c_humanitarian_food_but_no_assistance_32 <- df_tool_data |> 
+  filter(str_detect(string = main_sources_food_before_leaving, pattern = "received_humanitarian_food_assistance"),
+         proportion_hh_received_assistance %in%  c("no_households")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "proportion_hh_received_assistance",
+         i.check.current_value = proportion_hh_received_assistance,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_humanitarian_food_but_no_assistance_32",
+         i.check.issue = glue("proportion_hh_received_assistance: {proportion_hh_received_assistance} but main_sources_food_before_leaving: {main_sources_food_before_leaving}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
 
-
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_humanitarian_food_but_no_assistance_32")
 
 
 # combined  checks --------------------------------------------------------
