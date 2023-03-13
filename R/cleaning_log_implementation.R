@@ -59,3 +59,20 @@ df_deletion_log <- df_cleaning_log |>
   group_by(uuid) |> 
   filter(row_number() == 1) |> 
   ungroup()
+
+# write final datasets out -----------------------------------------------
+
+list_of_clean_datasets <- list("Raw_main" = df_raw_data,
+                               "cleaning_log" = df_cleaning_log,
+                               "deletion_log" = df_deletion_log,
+                               "cleaned_data" = df_cleaned_data
+)
+
+openxlsx::write.xlsx(x = list_of_clean_datasets,
+                     file = paste0("outputs/", butteR::date_file_prefix(), 
+                                   "_clean_data_h2r_eth.xlsx"), 
+                     overwrite = TRUE, keepNA = TRUE, na.string = "NA")
+
+openxlsx::write.xlsx(x = list_of_clean_datasets,
+                     file = paste0("inputs/clean_data_h2r_eth.xlsx"), 
+                     overwrite = TRUE, keepNA = TRUE, na.string = "NA")
