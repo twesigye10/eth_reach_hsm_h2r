@@ -773,7 +773,8 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 
 # combined  checks --------------------------------------------------------
 
-df_combined_checks <- bind_rows(checks_output)
+df_combined_checks <- bind_rows(checks_output) |> 
+  select(-point_number)
 
 # output the resulting data frame
 write_csv(x = df_combined_checks, file = paste0("outputs/", butteR::date_file_prefix(), "_combined_checks_h2r_eth.csv"), na = "")
