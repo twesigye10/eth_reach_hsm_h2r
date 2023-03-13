@@ -371,6 +371,25 @@ df_logic_c_more_yield_but_also_crop_loss_13 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_more_yield_but_also_crop_loss_13")
 
+# logic_c_no_inadequate_shelter_but_shelters_destroyed_14
+df_logic_c_no_inadequate_shelter_but_shelters_destroyed_14 <- df_tool_data |> 
+  filter(proportion_of_households_in_inadequate_shelter %in% c("no_households"),
+         shelters_destroyed_or_severely_damaged %in% c("few_shelters", "some_shelters", "many_shelters", "almost_all_or_all_shelters")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "proportion_of_households_in_inadequate_shelter",
+         i.check.current_value = proportion_of_households_in_inadequate_shelter,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_no_inadequate_shelter_but_shelters_destroyed_14",
+         i.check.issue = glue("proportion_of_households_in_inadequate_shelter: {proportion_of_households_in_inadequate_shelter} but shelters_destroyed_or_severely_damaged: {shelters_destroyed_or_severely_damaged}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
 
 
 
