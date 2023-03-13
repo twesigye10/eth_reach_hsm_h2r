@@ -115,7 +115,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 
 # logic_c_displacement_but_no_freq_2
 df_logic_c_displacement_but_no_freq_2 <- df_tool_data |> 
-  filter(any_displacement %in% c('yes'), freq_displacements == 0) |> 
+  filter(any_displacement %in% c("yes"), freq_displacements == 0) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "any_displacement",
          i.check.current_value = any_displacement,
@@ -323,7 +323,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 # logic_c_no_income_sources_but_access_livelihood_11
 df_logic_c_no_income_sources_but_access_livelihood_11 <- df_tool_data |> 
   filter(str_detect(string = top_three_sources_of_income, pattern = "none"),
-         people_had_access_to_livelihood_sources %in%  c('yes')) |> 
+         people_had_access_to_livelihood_sources %in%  c("yes")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "people_had_access_to_livelihood_sources",
          i.check.current_value = people_had_access_to_livelihood_sources,
@@ -583,7 +583,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logi
 
 # logic_c_feel_safe_but_women_safety_24
 df_logic_c_feel_safe_but_women_safety_24 <- df_tool_data |> 
-  filter(people_feel_safe_most_of_the_time %in%  c('yes'),
+  filter(people_feel_safe_most_of_the_time %in%  c("yes"),
          !str_detect(string = main_safety_concerns_for_women, pattern = "none")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "people_feel_safe_most_of_the_time",
@@ -604,7 +604,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 
 # logic_c_feel_safe_but_men_safety_25
 df_logic_c_feel_safe_but_men_safety_25 <- df_tool_data |> 
-  filter(people_feel_safe_most_of_the_time %in%  c('yes'),
+  filter(people_feel_safe_most_of_the_time %in%  c("yes"),
          !str_detect(string = main_safety_concerns_for_men, pattern = "none")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "people_feel_safe_most_of_the_time",
@@ -625,7 +625,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 
 # logic_c_feel_safe_but_girls_safety_26
 df_logic_c_feel_safe_but_girls_safety_26 <- df_tool_data |> 
-  filter(people_feel_safe_most_of_the_time %in%  c('yes'),
+  filter(people_feel_safe_most_of_the_time %in%  c("yes"),
          !str_detect(string = main_safety_concerns_for_girls, pattern = "none")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "people_feel_safe_most_of_the_time",
@@ -646,7 +646,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 
 # logic_c_feel_safe_but_boys_safety_27
 df_logic_c_feel_safe_but_boys_safety_27 <- df_tool_data |> 
-  filter(people_feel_safe_most_of_the_time %in%  c('yes'),
+  filter(people_feel_safe_most_of_the_time %in%  c("yes"),
          !str_detect(string = main_safety_concerns_for_boys, pattern = "none")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "people_feel_safe_most_of_the_time",
