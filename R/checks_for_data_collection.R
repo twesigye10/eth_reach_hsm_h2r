@@ -341,7 +341,35 @@ df_logic_c_no_income_sources_but_access_livelihood_11 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_no_income_sources_but_access_livelihood_11")
 
+# logic_c_harvest_more_than_4_months_in_sequence
+# df_logic_c_harvest_more_than_4_months_in_sequence_12 <- df_tool_data |> 
+#   filter() |> 
+#   mutate()  |> 
+#   batch_select_rename()
 
+# add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_harvest_more_than_4_months_in_sequence_12")
+
+
+# logic_c_more_yield_but_also_crop_loss_13
+df_logic_c_more_yield_but_also_crop_loss_13 <- df_tool_data |> 
+  filter(yield_recent_harvest_season_meher %in% c("somewhat_more_than_normal", "much_more_than_normal"),
+         crop_loss_estimate %in% c("few_crops_were_lost", "some_crops_were_lost", "many_crops_were_lost", "all_or_almost_all_crops_were_lost")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "yield_recent_harvest_season_meher",
+         i.check.current_value = yield_recent_harvest_season_meher,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_more_yield_but_also_crop_loss_13",
+         i.check.issue = glue("yield_recent_harvest_season_meher: {yield_recent_harvest_season_meher} but crop_loss_estimate: {crop_loss_estimate}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_more_yield_but_also_crop_loss_13")
 
 
 
