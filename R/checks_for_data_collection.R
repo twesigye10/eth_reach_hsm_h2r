@@ -665,6 +665,27 @@ df_logic_c_feel_safe_but_boys_safety_27 <- df_tool_data |>
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_feel_safe_but_boys_safety_27")
 
+# logic_c_not_feel_safe_but_women_safety_concerns_none_28
+df_logic_c_not_feel_safe_but_women_safety_concerns_none_28 <- df_tool_data |> 
+  filter(people_feel_safe_most_of_the_time %in%  c("no"),
+         str_detect(string = main_safety_concerns_for_women, pattern = "none")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "people_feel_safe_most_of_the_time",
+         i.check.current_value = people_feel_safe_most_of_the_time,
+         i.check.value = "",
+         i.check.issue_id = "logic_c_not_feel_safe_but_women_safety_concerns_none_28",
+         i.check.issue = glue("people_feel_safe_most_of_the_time: {people_feel_safe_most_of_the_time} but main_safety_concerns_for_women: {main_safety_concerns_for_women}"),
+         i.check.other_text = "",
+         i.check.checked_by = "",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "", 
+         i.check.reviewed = "",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "")  |> 
+  batch_select_rename()
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_not_feel_safe_but_women_safety_concerns_none_28")
+
 
 
 
