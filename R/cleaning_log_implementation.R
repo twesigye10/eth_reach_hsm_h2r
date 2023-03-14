@@ -51,6 +51,9 @@ df_cleaned_data <- supporteR::cleaning_support(input_df_raw_data = df_raw_data,
   mutate(across(.cols = -c(any_of(cols_to_escape), matches("_age$|^age_|uuid")),
                 .fns = ~ifelse(str_detect(string = ., pattern = "^[9]{2,9}$"), "NA", .)))
 
+# Add composite indicators at this stage ----------------------------------
+
+
 
 # deletion log ------------------------------------------------------------
 
