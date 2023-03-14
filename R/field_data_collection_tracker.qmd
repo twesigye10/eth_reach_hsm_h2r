@@ -1,0 +1,150 @@
+---
+title: "ETH H2R: Data collection Tracker"
+author: "REACH"
+format: html
+editor: visual
+execute:
+  echo: false
+  warning : FALSE
+  message : FALSE
+---
+
+## ETH Tracker H2R
+
+```{r}
+#| label: packages_and_data
+#| warning : FALSE
+#| message : FALSE
+
+# read packages
+library(tidyverse)
+library(lubridate)
+library(glue)
+library(htmlwidgets)
+
+df_tool_data <- readxl::read_excel("../inputs/ETH2002_H2R_data.xlsx")  |>  
+  mutate(uuid = `_uuid`,
+         start_date = as_date(start),
+         start = as_datetime(start),
+         end = as_datetime(end))
+
+# days that contain data
+df_days_for_data_collection <- df_tool_data |> 
+  select(start_date) |> 
+  unique() |> 
+  arrange(start_date) |> 
+  pull()
+
+df_data_support_cl_log <- df_tool_data |> 
+  select(uuid, loc_woreda, loc_kebele)
+
+# cleaning log handling
+df_cl_log <- read_csv(file = "../inputs/combined_checks_h2r_eth.csv") |> 
+  left_join(df_data_support_cl_log, by = "uuid")
+
+# change_response logs that affect stats in the data collection progress
+cl_log_change_response <- df_cl_log |> 
+  filter(type == "change_response", 
+         !is.na(value),
+         reviewed == 1, 
+         adjust_log != "delete_log", 
+  ) |> 
+  select(uuid, name, value)
+
+# updated tool data
+df_updated_tool_data <- df_tool_data
+
+# get uuids from cleaning log
+uuids_chg_response <- cl_log_change_response |> pull(uuid) |> unique()
+
+for (current_uuid in uuids_chg_response) {
+  current_uuid_data <- cl_log_change_response |> 
+    filter(uuid == current_uuid) |> 
+    mutate(value = ifelse(name == "enumerator_id", as.numeric(value), value)) |> 
+    pivot_wider(names_from = "name", values_from = "value", uuid)
+  print(current_uuid_data)
+  # process current updates
+  df_current_updated <- df_updated_tool_data |> 
+    rows_update(y = current_uuid_data, by = "uuid")
+  # update the parent dataset with current updates
+  df_updated_tool_data <- df_current_updated
+}
+
+# enumerator performance data
+df_enum_performance <- df_updated_tool_data |> 
+  mutate(int.survey_time_interval = lubridate::time_length(end - start, unit = "min"),
+         int.survey_time_interval = ceiling(int.survey_time_interval))
+
+# functions for changing some options in the table
+
+dt_options_fewcols <- function(x){
+  DT::datatable(x,
+                rownames = FALSE,
+                options = list(
+                  pageLength = 20,
+                  initComplete = JS(
+                    "function(settings, json) {",
+                    "$(this.api().table().header()).css({'background-color': '#333', 'color': '#fff'});",
+                    "}")
+                )
+  )
+}
+
+```
+
+## Summary on the surveys done
+
+### Daily enumerator performance
+
+The average survey time for all the data is: **`r round(mean(df_enum_performance$int.survey_time_interval), 0)`** Minutes
+
+```{r}
+#| label: enumerator_performance
+df_enum_performance |> 
+  group_by(loc_zone, start_date, enumerator_id) |> 
+  summarise(number_of_interviews_done = n(), `average_survey_time(minutes)` = round(mean(int.survey_time_interval, na.rm = TRUE), 0)) |> 
+  dt_options_fewcols()
+```
+
+## Looking into the cleaning log
+
+### Number of issues by issue_id
+
+```{r}
+#| label: issues_by_id
+df_cl_log |> 
+  group_by(issue_id) |> 
+  summarise(number_of_issues_by_issue_id = n()) |>
+  dt_options_fewcols()
+```
+
+### Number of issues by enumerator
+
+```{r}
+#| label: issues_by_enumerator
+df_cl_log |> 
+  group_by(enumerator_id) |> 
+  summarise(number_of_issues_by_enumerator_id = n()) |>
+  dt_options_fewcols()
+```
+
+### Number of issues by enumerator and issue_id
+
+```{r}
+#| label: issues_by_enumerator_and_issue_id
+df_cl_log |> 
+  group_by(enumerator_id, issue_id) |> 
+  summarise(number_of_issues_by_enumerator_and_issue_id = n()) |>
+  dt_options_fewcols()
+```
+
+### Enumerators with surveys for deletion
+
+```{r}
+#| label: enumerators_with_deletions
+df_cl_log |> 
+  filter(type == "remove_survey", reviewed == 1, adjust_log != "delete_log") |> 
+  group_by(enumerator_id) |> 
+  summarise(number_of_surveys_for_deletion_by_enumerator = n()) |>
+  dt_options_fewcols()
+```
