@@ -76,11 +76,29 @@ df_enum_performance <- df_updated_tool_data |>
 
 df_samples_required <- readxl::read_excel("../support_files/20230306_prepared_location_data_h2r.xlsx", sheet = "settlement_list")
 
+df_logical_check_description <-  readxl::read_excel("../support_files/V5_Logical checks template_ETH2002.xlsx") %>% 
+  janitor::clean_names() %>% 
+  select(check_number, check_description) %>% 
+  mutate(check_number = as.character(check_number))
+
 # tool
 loc_tool <- "../inputs/ETH2002_H2R_tool.xlsx"
 
 df_survey <- readxl::read_excel(loc_tool, sheet = "survey")
-df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
+df_choices <- readxl::read_excel(loc_tool, sheet = "choices") |> 
+  mutate(code = name, label = `label::english`)
+
+df_zone_info <- df_choices |> 
+  filter(list_name %in% c("zone_mv_list")) |> 
+  select(code, zone = label)
+
+df_woreda_info <- df_choices |> 
+  filter(list_name %in% c("woreda_mv_list")) |> 
+  select(code, woreda = label)
+
+df_kebele_info <- df_choices |> 
+  filter(list_name %in% c("kebele_mv_list")) |> 
+  select(code, kebele = label)
 
 # functions for changing some options in the table
 
@@ -126,6 +144,14 @@ df_updated_tool_data |>
          int.surveys_and_deletion = number_of_surveys - surveys_for_deletion,
          remaining_surveys = required_samples - int.surveys_and_deletion ) |> 
   select(-c(int.surveys_and_deletion)) |> 
+  # left_join(df_zone_info, by = c("loc_zone" = "code")) |> 
+  # relocate(zone, .after = loc_zone) |> 
+  # left_join(df_woreda_info, by = c("loc_woreda" = "code")) |> 
+  # relocate(woreda, .after = loc_woreda) |>
+  # left_join(df_kebele_info, by = c("loc_kebele" = "code")) |> 
+  # relocate(kebele, .after = loc_kebele) |>
+  # ungroup() |> 
+  # select(-c(loc_zone, loc_woreda, loc_kebele)) |>
   dt_options_fewcols()
 
 ```
@@ -137,8 +163,16 @@ The average survey time for all the data is: **`r round(mean(df_enum_performance
 ```{r, echo = FALSE}
 
 df_enum_performance |> 
-  group_by(loc_zone, loc_kebele, start_date, enumerator_id) |> 
+  group_by(loc_zone, loc_woreda, loc_kebele, start_date, enumerator_id) |> 
   summarise(number_of_interviews_done = n(), `average_survey_time(minutes)` = round(mean(int.survey_time_interval, na.rm = TRUE), 0)) |> 
+  left_join(df_zone_info, by = c("loc_zone" = "code")) |> 
+  relocate(zone, .after = loc_zone) |> 
+  left_join(df_woreda_info, by = c("loc_woreda" = "code")) |> 
+  relocate(woreda, .after = loc_woreda) |>
+  left_join(df_kebele_info, by = c("loc_kebele" = "code")) |> 
+  relocate(kebele, .after = loc_kebele) |>
+  ungroup() |> 
+  select(-c(loc_zone, loc_woreda, loc_kebele)) |> 
   dt_options_fewcols()
 ```
 
@@ -148,8 +182,12 @@ df_enum_performance |>
 
 ```{r, echo = FALSE}
 df_cl_log |> 
-  group_by(issue_id) |> 
+  group_by(issue_id, issue) |> 
   summarise(number_of_issues_by_issue_id = n()) |>
+  mutate(int.issue_id = str_extract(string = issue_id, pattern = "[0-9]{1,3}")) |> 
+  left_join(df_logical_check_description, by = c("int.issue_id" = "check_number")) |> 
+  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), paste(check_description, "[", issue, "]"), issue)) |> 
+  select(-c(int.issue_id, check_description))  |> 
   dt_options_fewcols()
 ```
 
@@ -166,8 +204,12 @@ df_cl_log |>
 
 ```{r, echo = FALSE}
 df_cl_log |> 
-  group_by(enumerator_id, issue_id) |> 
+  group_by(enumerator_id, issue_id, issue) |> 
   summarise(number_of_issues_by_enumerator_and_issue_id = n()) |>
+  mutate(int.issue_id = str_extract(string = issue_id, pattern = "[0-9]{1,3}")) |> 
+  left_join(df_logical_check_description, by = c("int.issue_id" = "check_number")) |> 
+  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), paste(check_description, "[", issue, "]"), issue)) |> 
+  select(-c(int.issue_id, check_description))  |> 
   dt_options_fewcols()
 ```
 
