@@ -73,6 +73,15 @@ df_enum_performance <- df_updated_tool_data |>
   mutate(int.survey_time_interval = lubridate::time_length(end - start, unit = "min"),
          int.survey_time_interval = ceiling(int.survey_time_interval))
 
+# surveys for deletion
+df_cl_deletion <- df_cl_log |> 
+  filter(type %in% "remove_survey", reviewed == 1, !adjust_log %in% "delete_log") |>
+  distinct(loc_kebele, uuid)
+
+df_cl_surveys_for_deletion <- df_cl_deletion |>
+  group_by(loc_kebele) |>
+  summarise(surveys_for_deletion = n())
+
 # sample data
 df_samples_required <- readxl::read_excel("../support_files/20230306_prepared_location_data_h2r.xlsx", sheet = "settlement_list")
 
@@ -129,9 +138,13 @@ dt_options_fewcols <- function(x){
 
 ```
 
->There are **`r nrow(df_updated_tool_data)`** total number of surveys done as of **`r df_days_for_data_collection[length(df_days_for_data_collection)]`**.
+## Summary on the surveys done
 
-### Summary on the surveys done
+>Total surveys: **`r nrow(df_updated_tool_data)`**,\
+Surveys for deletion: **`r nrow(df_cl_deletion)`**,\
+Last date of data collection: **`r df_days_for_data_collection[length(df_days_for_data_collection)]`**.
+
+### Summary on the surveys per location
 
 ```{r, echo = FALSE}
 
