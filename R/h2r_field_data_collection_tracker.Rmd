@@ -76,6 +76,11 @@ df_enum_performance <- df_updated_tool_data |>
 
 df_samples_required <- readxl::read_excel("../support_files/20230306_prepared_location_data_h2r.xlsx", sheet = "settlement_list")
 
+# tool
+loc_tool <- "../inputs/ETH2002_H2R_tool.xlsx"
+
+df_survey <- readxl::read_excel(loc_tool, sheet = "survey")
+df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
 
 # functions for changing some options in the table
 
