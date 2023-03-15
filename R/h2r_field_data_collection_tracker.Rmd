@@ -100,6 +100,15 @@ df_kebele_info <- df_choices |>
   filter(list_name %in% c("kebele_mv_list")) |> 
   select(code, kebele = label)
 
+df_zone_to_kebele_info <- df_choices |> 
+  filter(list_name %in% c("kebele_mv_list")) |> 
+  select(zone_code = zone, woreda_code = woreda, code, kebele = label) |> 
+  left_join(df_zone_info, by = c("zone_code" = "code")) |>
+  relocate(zone, .after = zone_code) |>
+  left_join(df_woreda_info, by = c("woreda_code" = "code")) |>
+  relocate(woreda, .after = woreda_code) |>
+  select(-c(zone_code, woreda_code))
+
 # functions for changing some options in the table
 
 dt_options_fewcols <- function(x){
@@ -144,14 +153,8 @@ df_updated_tool_data |>
          int.surveys_and_deletion = number_of_surveys - surveys_for_deletion,
          remaining_surveys = required_samples - int.surveys_and_deletion ) |> 
   select(-c(int.surveys_and_deletion)) |> 
-  # left_join(df_zone_info, by = c("loc_zone" = "code")) |> 
-  # relocate(zone, .after = loc_zone) |> 
-  # left_join(df_woreda_info, by = c("loc_woreda" = "code")) |> 
-  # relocate(woreda, .after = loc_woreda) |>
-  # left_join(df_kebele_info, by = c("loc_kebele" = "code")) |> 
-  # relocate(kebele, .after = loc_kebele) |>
-  # ungroup() |> 
-  # select(-c(loc_zone, loc_woreda, loc_kebele)) |>
+  left_join(df_zone_to_kebele_info, by = c("loc_kebele" = "code")) |> 
+  relocate(c(zone, woreda, loc_kebele, kebele), .before = number_of_surveys) |>
   dt_options_fewcols()
 
 ```
