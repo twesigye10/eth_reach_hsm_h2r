@@ -100,6 +100,7 @@ df_kebele_info <- df_choices |>
   filter(list_name %in% c("kebele_mv_list")) |> 
   select(code, kebele = label)
 
+# zone_to_kebele_info
 df_zone_to_kebele_info <- df_choices |> 
   filter(list_name %in% c("kebele_mv_list")) |> 
   select(zone_code = zone, woreda_code = woreda, code, kebele = label) |> 
