@@ -21,6 +21,12 @@ loc_tool <- "inputs/ETH2002_H2R_tool.xlsx"
 df_survey <- readxl::read_excel(loc_tool, sheet = "survey")
 df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
 
+# logical checks
+df_logical_check_description <-  readxl::read_excel("../support_files/V5_Logical checks template_ETH2002.xlsx") |> 
+  janitor::clean_names() |> 
+  filter(!is.na(check_number)) |>
+  select(check_number, check_description) |> 
+  mutate(check_number = as.character(check_number))
 
 # checks ------------------------------------------------------------------
 
@@ -29,8 +35,8 @@ checks_output <- list()
 
 # testing data ------------------------------------------------------------
 
-df_testing_data <- df_tool_data %>% 
-  filter(i.check.start_date < as_date("2023-03-08")) %>% 
+df_testing_data <- df_tool_data |> 
+  filter(i.check.start_date < as_date("2023-03-08")) |> 
   mutate(i.check.type = "remove_survey",
          i.check.name = "",
          i.check.current_value = "",
@@ -43,8 +49,8 @@ df_testing_data <- df_tool_data %>%
          i.check.comment = "", 
          i.check.reviewed = "1",
          i.check.adjust_log = "",
-         i.check.so_sm_choices = "") %>% 
-  dplyr::select(starts_with("i.check.")) %>% 
+         i.check.so_sm_choices = "") |> 
+  dplyr::select(starts_with("i.check.")) |> 
   rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_testing_data")
