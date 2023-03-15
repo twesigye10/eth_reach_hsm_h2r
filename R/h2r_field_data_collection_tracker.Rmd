@@ -86,9 +86,10 @@ df_cl_surveys_for_deletion <- df_cl_deletion |>
 df_samples_required <- readxl::read_excel("../support_files/20230306_prepared_location_data_h2r.xlsx", sheet = "settlement_list")
 
 # logical checks
-df_logical_check_description <-  readxl::read_excel("../support_files/V5_Logical checks template_ETH2002.xlsx") %>% 
-  janitor::clean_names() %>% 
-  select(check_number, check_description) %>% 
+df_logical_check_description <-  readxl::read_excel("../support_files/V5_Logical checks template_ETH2002.xlsx") |> 
+  janitor::clean_names() |> 
+  filter(!is.na(check_number)) |>
+  select(check_number, check_description) |> 
   mutate(check_number = as.character(check_number))
 
 # tool
@@ -195,11 +196,11 @@ df_enum_performance |>
 
 ```{r, echo = FALSE}
 df_cl_log |> 
-  group_by(issue_id, issue) |> 
+  group_by(issue_id) |> 
   summarise(number_of_issues_by_issue_id = n()) |>
   mutate(int.issue_id = str_extract(string = issue_id, pattern = "[0-9]{1,3}")) |> 
   left_join(df_logical_check_description, by = c("int.issue_id" = "check_number")) |> 
-  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), paste(check_description, "[", issue, "]"), issue)) |> 
+  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), check_description, issue_id)) |> 
   select(-c(int.issue_id, check_description))  |> 
   dt_options_fewcols()
 ```
@@ -217,11 +218,11 @@ df_cl_log |>
 
 ```{r, echo = FALSE}
 df_cl_log |> 
-  group_by(enumerator_id, issue_id, issue) |> 
+  group_by(enumerator_id, issue_id) |> 
   summarise(number_of_issues_by_enumerator_and_issue_id = n()) |>
   mutate(int.issue_id = str_extract(string = issue_id, pattern = "[0-9]{1,3}")) |> 
   left_join(df_logical_check_description, by = c("int.issue_id" = "check_number")) |> 
-  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), paste(check_description, "[", issue, "]"), issue)) |> 
+  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), check_description, issue_id)) |> 
   select(-c(int.issue_id, check_description))  |> 
   dt_options_fewcols()
 ```
