@@ -22,7 +22,7 @@ df_survey <- readxl::read_excel(loc_tool, sheet = "survey")
 df_choices <- readxl::read_excel(loc_tool, sheet = "choices")
 
 # logical checks
-df_logical_check_description <-  readxl::read_excel("../support_files/V5_Logical checks template_ETH2002.xlsx") |> 
+df_logical_check_description <-  readxl::read_excel("support_files/V5_Logical checks template_ETH2002.xlsx") |> 
   janitor::clean_names() |> 
   filter(!is.na(check_number)) |>
   select(check_number, check_description) |> 
@@ -780,7 +780,11 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 # combined  checks --------------------------------------------------------
 
 df_combined_checks <- bind_rows(checks_output) |> 
-  select(-point_number)
+  select(-point_number) |> 
+  mutate(int.issue_id = str_extract(string = issue_id, pattern = "[0-9]{1,3}")) |> 
+  left_join(df_logical_check_description, by = c("int.issue_id" = "check_number")) |> 
+  mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), paste(check_description, "[", issue, "]"), issue)) |> 
+  select(-c(int.issue_id, check_description))
 
 # output the resulting data frame
 write_csv(x = df_combined_checks, file = paste0("outputs/", butteR::date_file_prefix(), "_combined_checks_h2r_eth.csv"), na = "")
