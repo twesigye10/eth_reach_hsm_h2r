@@ -73,9 +73,10 @@ df_enum_performance <- df_updated_tool_data |>
   mutate(int.survey_time_interval = lubridate::time_length(end - start, unit = "min"),
          int.survey_time_interval = ceiling(int.survey_time_interval))
 
-
+# sample data
 df_samples_required <- readxl::read_excel("../support_files/20230306_prepared_location_data_h2r.xlsx", sheet = "settlement_list")
 
+# logical checks
 df_logical_check_description <-  readxl::read_excel("../support_files/V5_Logical checks template_ETH2002.xlsx") %>% 
   janitor::clean_names() %>% 
   select(check_number, check_description) %>% 
@@ -137,12 +138,6 @@ dt_options_fewcols <- function(x){
 df_samp_per_location <- df_samples_required |> 
   group_by(kebele) |> 
   summarise(required_samples = n())
-
-df_cl_surveys_for_deletion <- df_cl_log |> 
-  filter(type %in% "remove_survey", reviewed == 1, !adjust_log %in% "delete_log") |>
-  group_by(loc_kebele) |> 
-  distinct(uuid) |>
-  summarise(surveys_for_deletion = n())
 
 df_updated_tool_data |> 
   group_by(loc_kebele) |> 
