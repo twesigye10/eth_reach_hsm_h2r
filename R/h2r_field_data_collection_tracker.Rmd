@@ -88,6 +88,7 @@ df_survey <- readxl::read_excel(loc_tool, sheet = "survey")
 df_choices <- readxl::read_excel(loc_tool, sheet = "choices") |> 
   mutate(code = name, label = `label::english`)
 
+# extract location labels
 df_zone_info <- df_choices |> 
   filter(list_name %in% c("zone_mv_list")) |> 
   select(code, zone = label)
