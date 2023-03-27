@@ -19,6 +19,7 @@ library(tidyverse)
 library(lubridate)
 library(glue)
 library(htmlwidgets)
+library(supporteR)
 
 df_tool_data <- readxl::read_excel("../inputs/ETH2002_H2R_data.xlsx")  |>  
   mutate(uuid = `_uuid`,
@@ -173,7 +174,7 @@ df_updated_tool_data |>
 
 ### Daily enumerator performance
 
-The average survey time for all the data is: **`r round(mean(df_enum_performance$int.survey_time_interval), 0)`** Minutes
+The average survey time for all the data is: **`r get_average_survey_time(df_updated_tool_data)`** Minutes
 
 ```{r, echo = FALSE}
 
