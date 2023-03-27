@@ -154,19 +154,19 @@ df_samp_per_location <- df_samples_required |>
   summarise(required_samples = n())
 
 df_updated_tool_data |> 
-  group_by(loc_kebele) |> 
+  group_by(info_kebele) |> 
   summarise(number_of_surveys = n()) |> 
-  arrange(loc_kebele) |> 
-  full_join(df_samp_per_location, by = c("loc_kebele" = "kebele")) |>
+  arrange(info_kebele) |> 
+  full_join(df_samp_per_location, by = c("info_kebele" = "kebele")) |>
   mutate(required_samples = ifelse(is.na(required_samples), 0, required_samples)) |> 
-  left_join(df_cl_surveys_for_deletion, by = "loc_kebele") |> 
+  left_join(df_cl_surveys_for_deletion, by = c("info_kebele" = "loc_kebele")) |> 
   mutate(number_of_surveys = ifelse(is.na(number_of_surveys), 0, number_of_surveys),
          surveys_for_deletion = ifelse(is.na(surveys_for_deletion), 0, surveys_for_deletion),
          int.surveys_and_deletion = number_of_surveys - surveys_for_deletion,
          remaining_surveys = required_samples - int.surveys_and_deletion ) |> 
   select(-c(int.surveys_and_deletion)) |> 
-  left_join(df_zone_to_kebele_info, by = c("loc_kebele" = "code")) |> 
-  relocate(c(zone, woreda, loc_kebele, kebele), .before = number_of_surveys) |>
+  left_join(df_zone_to_kebele_info, by = c("info_kebele" = "code")) |> 
+  relocate(c(zone, woreda, info_kebele, kebele), .before = number_of_surveys) |>
   dt_options_fewcols()
 
 ```
