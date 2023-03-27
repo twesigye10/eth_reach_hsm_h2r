@@ -157,7 +157,8 @@ df_updated_tool_data |>
   group_by(loc_kebele) |> 
   summarise(number_of_surveys = n()) |> 
   arrange(loc_kebele) |> 
-  right_join(df_samp_per_location, by = c("loc_kebele" = "kebele")) |> 
+  full_join(df_samp_per_location, by = c("loc_kebele" = "kebele")) |>
+  mutate(required_samples = ifelse(is.na(required_samples), 0, required_samples)) |> 
   left_join(df_cl_surveys_for_deletion, by = "loc_kebele") |> 
   mutate(number_of_surveys = ifelse(is.na(number_of_surveys), 0, number_of_surveys),
          surveys_for_deletion = ifelse(is.na(surveys_for_deletion), 0, surveys_for_deletion),
