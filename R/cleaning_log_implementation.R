@@ -2,6 +2,7 @@
 library(tidyverse)
 library(lubridate)
 library(glue)
+library(supporteR)
 
 # Read data and checking log
 
