@@ -15,6 +15,8 @@ df_cleaning_log <- read_csv("inputs/combined_checks_h2r_eth.csv", col_types = co
   ) %>% 
   filter(!is.na(value), !is.na(uuid)) %>%
   mutate(value = ifelse(value %in% c("blank"), NA, value),
+         sheet = NA,
+         index = NA,
          relevant = NA) %>%
   select(uuid, type, name, value, issue_id, sheet, index, relevant, issue)
 
