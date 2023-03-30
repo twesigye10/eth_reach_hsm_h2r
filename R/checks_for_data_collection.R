@@ -438,7 +438,7 @@ df_logic_c_time_short_but_school_far_16 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
-add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_16")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_time_short_but_school_far_16")
 
 # logic_c_time_short_but_school_far_17
 df_logic_c_time_short_but_school_far_17 <- df_tool_data |> 
@@ -459,7 +459,7 @@ df_logic_c_time_short_but_school_far_17 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
-add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_17")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_time_short_but_school_far_17")
 
 # logic_c_time_short_but_school_far_18
 df_logic_c_time_short_but_school_far_18 <- df_tool_data |> 
@@ -480,7 +480,7 @@ df_logic_c_time_short_but_school_far_18 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
-add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_18")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_time_short_but_school_far_18")
 
 # logic_c_time_short_but_school_far_19
 df_logic_c_time_short_but_school_far_19 <- df_tool_data |> 
@@ -501,7 +501,7 @@ df_logic_c_time_short_but_school_far_19 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
-add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_time_short_but_school_far_19")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_time_short_but_school_far_19")
 
 # logic_c_time_fetch_short_but_waterpoints_far_20
 df_logic_c_logic_c_time_fetch_short_but_waterpoints_far_20 <- df_tool_data |> 
@@ -585,7 +585,7 @@ df_logic_c_access_sanitation_but_open_defecation_23 <- df_tool_data |>
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
-add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "logic_c_access_sanitation_but_open_defecation_23")
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_access_sanitation_but_open_defecation_23")
 
 # logic_c_feel_safe_but_women_safety_24
 df_logic_c_feel_safe_but_women_safety_24 <- df_tool_data |> 
