@@ -11,8 +11,7 @@ df_tool_data <- readxl::read_excel("inputs/ETH2002_H2R_data.xlsx") |>
          start = as_datetime(start),
          end = as_datetime(end)) |> 
   checks_add_extra_cols(input_enumerator_id_col = "enumerator_id",
-                        input_location_col = "loc_zone",
-                        input_point_id_col = "point_number")
+                        input_location_col = "loc_zone")
 
 # tool
 
@@ -64,7 +63,6 @@ max_time_of_survey <- 120
 df_c_survey_time <-  supporteR::check_survey_time(input_tool_data = df_tool_data, 
                                        input_enumerator_id_col = "enumerator_id",
                                        input_location_col = "loc_zone",
-                                       input_point_id_col = "point_number",
                                        input_min_time = min_time_of_survey, 
                                        input_max_time = max_time_of_survey)
 
@@ -72,8 +70,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c
 
 # check duplicate uuids ---------------------------------------------------
 
-df_c_duplicate_uuid <-  supporteR::checks_duplicate_uuids(input_tool_data = df_tool_data,
-                                                          input_point_id_col = "point_number")
+df_c_duplicate_uuid <-  supporteR::checks_duplicate_uuids(input_tool_data = df_tool_data)
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_duplicate_uuid")
 
@@ -81,8 +78,7 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c
 
 df_c_outliers <- supporteR::check_outliers_cleaninginspector(input_tool_data = df_tool_data,
                                                              input_enumerator_id_col = "enumerator_id",
-                                                             input_location_col = "loc_zone",
-                                                             input_point_id_col = "point_number")
+                                                             input_location_col = "loc_zone")
 
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c_outliers")
 
@@ -90,7 +86,6 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_c
 
 df_others_data <- supporteR::extract_other_specify_data(input_tool_data = df_tool_data, 
                                                         input_enumerator_id_col = "enumerator_id",
-                                                        input_point_id_col = "point_number", 
                                                         input_location_col = "loc_zone",
                                                         input_survey = df_survey,  
                                                         input_choices = df_choices)
