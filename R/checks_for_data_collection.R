@@ -775,7 +775,6 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 # combined  checks --------------------------------------------------------
 
 df_combined_checks <- bind_rows(checks_output) |> 
-  select(-point_number) |> 
   mutate(int.issue_id = str_extract(string = issue_id, pattern = "[0-9]{1,3}")) |> 
   left_join(df_logical_check_description, by = c("int.issue_id" = "check_number")) |> 
   mutate(issue = ifelse(str_detect(string = issue_id, pattern = "[0-9]{1,3}"), paste("[", issue, "].", check_description), issue)) |> 
