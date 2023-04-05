@@ -5,6 +5,7 @@ library(glue)
 library(supporteR)
 
 source("R/composite_indicators.R")
+
 # Read data and checking log 
 
 df_cleaning_log <- read_csv("inputs/combined_checks_h2r_eth.csv", col_types = cols(sheet = "c", index = "i")) |> 
