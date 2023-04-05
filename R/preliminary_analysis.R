@@ -19,5 +19,7 @@ df_tool_data_support <- df_survey |>
   separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" )
 
 # dap
-dap <- read_csv("inputs/r_dap_h2r_eth.csv") |> 
-  filter(!str_detect(string = subset_1, pattern = " |household_type"))
+dap <- read_csv("inputs/r_dap_h2r_eth.csv")
+
+# set up design object
+ref_svy <- as_survey(.data = df_main_clean_data)
