@@ -4,6 +4,7 @@ library(lubridate)
 library(glue)
 library(supporteR)
 
+source("R/composite_indicators.R")
 # Read data and checking log 
 
 df_cleaning_log <- read_csv("inputs/combined_checks_h2r_eth.csv", col_types = cols(sheet = "c", index = "i")) |> 
@@ -57,7 +58,7 @@ df_cleaned_data <- supporteR::cleaning_support(input_df_raw_data = df_raw_data,
 
 # Add composite indicators at this stage ----------------------------------
 
-
+df_main_with_composites <- create_composite_indicators_pa(input_df = df_cleaned_data)
 
 # deletion log ------------------------------------------------------------
 
@@ -72,7 +73,7 @@ df_deletion_log <- df_cleaning_log |>
 list_of_clean_datasets <- list("Raw_main" = df_raw_data,
                                "cleaning_log" = df_cleaning_log,
                                "deletion_log" = df_deletion_log,
-                               "cleaned_data" = df_cleaned_data
+                               "cleaned_data" = df_main_with_composites
 )
 
 openxlsx::write.xlsx(x = list_of_clean_datasets,
