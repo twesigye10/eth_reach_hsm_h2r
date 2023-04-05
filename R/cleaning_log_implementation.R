@@ -59,7 +59,7 @@ df_cleaned_data <- supporteR::cleaning_support(input_df_raw_data = df_raw_data,
 
 # Add composite indicators at this stage ----------------------------------
 
-df_main_with_composites <- create_composite_indicators_pa(input_df = df_cleaned_data)
+df_main_with_composites <- create_composite_indicators(input_df = df_cleaned_data)
 
 # deletion log ------------------------------------------------------------
 
