@@ -17,3 +17,7 @@ df_tool_data_support <- df_survey |>
   select(type, name, label) |> 
   filter(str_detect(string = type, pattern = "integer|date|select_one|select_multiple")) |> 
   separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" )
+
+# dap
+dap <- read_csv("inputs/r_dap_h2r_eth.csv") |> 
+  filter(!str_detect(string = subset_1, pattern = " |household_type"))
