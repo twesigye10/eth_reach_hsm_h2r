@@ -21,7 +21,13 @@ create_composite_indicators <- function(input_df) {
            i.hhs_cat = case_when(i.hhs <= 1 ~ "Little to no hunger",
                                  i.hhs <= 3 ~ "Moderate hunger",
                                  i.hhs <= 6 ~ "Severe hunger"
-           )
+           ),
+           int.displacement_time = lubridate::time_length(date_arrived_current_location - date_last_in_settlement, unit = "day"),
+           i.displacement_time = case_when(int.displacement_time <= 5 ~ "days_0_5",
+                                           int.displacement_time <= 10 ~ "days_6_10",
+                                           int.displacement_time <= 30 ~ "days_10+"),
+           i.crops_destroyed_by_conflict = format(crops_destroyed_by_conflict, "%Y_%b" ), 
+           i.when_schools_last_opened = format(when_schools_last_opened, "%Y_%b")
     ) |> 
     select(-c(starts_with("int.")))
 }
