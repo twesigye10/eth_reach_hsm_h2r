@@ -14,7 +14,7 @@ df_main_clean_data <- readxl::read_excel(path = data_path, sheet = "cleaned_data
 df_survey <- readxl::read_excel("inputs/ETH2002_H2R_tool.xlsx", sheet = "survey") 
 
 df_tool_data_support <- df_survey |> 
-  select(type, name, label) |> 
+  select(type, name, label = `label::english`) |> 
   filter(str_detect(string = type, pattern = "integer|date|select_one|select_multiple")) |> 
   separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" )
 
