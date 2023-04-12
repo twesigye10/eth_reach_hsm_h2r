@@ -26,7 +26,12 @@ create_composite_indicators <- function(input_df) {
                                            int.displacement_time <= 10 ~ "days_6_10",
                                            int.displacement_time <= 30 ~ "days_10+"),
            i.crops_destroyed_by_conflict = format(crops_destroyed_by_conflict, "%Y_%b" ), 
-           i.when_schools_last_opened = format(when_schools_last_opened, "%Y_%b")
+           i.when_schools_last_opened = format(when_schools_last_opened, "%Y_%b"),
+           i.respondent_age = case_when(respondent_age < 18 ~ "age_12_17",
+                                        respondent_age <= 24 ~ "age_18_24",
+                                        respondent_age <= 39 ~ "age_25_39",
+                                        respondent_age <= 59 ~ "age_40_59",
+                                        respondent_age > 59 ~ "age_60+"),
     ) |> 
     select(-c(starts_with("int.")))
 }
