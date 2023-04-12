@@ -32,6 +32,9 @@ create_composite_indicators <- function(input_df) {
                                         respondent_age <= 39 ~ "age_25_39",
                                         respondent_age <= 59 ~ "age_40_59",
                                         respondent_age > 59 ~ "age_60+"),
+           i.freq_displacements = case_when(freq_displacements <= 2 ~ "freq_1_2",
+                                            freq_displacements <= 5 ~ "freq_3_5",
+                                            freq_displacements > 5 ~ "freq_6+")
     ) |> 
     select(-c(starts_with("int.")))
 }
