@@ -743,8 +743,8 @@ df_logic_c_not_feel_safe_but_boys_safety_concerns_none_31 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
@@ -764,8 +764,8 @@ df_logic_c_humanitarian_food_but_no_assistance_32 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
