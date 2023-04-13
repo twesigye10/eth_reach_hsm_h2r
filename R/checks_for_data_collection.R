@@ -596,8 +596,8 @@ df_logic_c_feel_safe_but_women_safety_24 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
