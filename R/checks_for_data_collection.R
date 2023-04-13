@@ -542,19 +542,19 @@ add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_l
 
 # logic_c_no_water_drinking_but_no_water_problems_22
 df_logic_c_no_water_drinking_but_no_water_problems_22 <- df_tool_data |> 
-  filter((proportion_hh_enough_water_drinking %in%  c('none')|proportion_hh_enough_water_cooking_bathing_washing %in%  c('none')),
+  filter((proportion_hh_enough_water_drinking %in%  c('none')),
          str_detect(string = main_problems_accessing_water, pattern = "no_problem")) |> 
   mutate(i.check.type = "change_response",
          i.check.name = "proportion_hh_enough_water_drinking",
          i.check.current_value = proportion_hh_enough_water_drinking,
-         i.check.value = "",
+         i.check.value = "all_or_almost_all_76_100",
          i.check.issue_id = "logic_c_no_water_drinking_but_no_water_problems_22",
          i.check.issue = glue("proportion_hh_enough_water_drinking: {proportion_hh_enough_water_drinking} but main_problems_accessing_water: {main_problems_accessing_water}"),
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
+         i.check.reviewed = "1",
          i.check.adjust_log = "",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
