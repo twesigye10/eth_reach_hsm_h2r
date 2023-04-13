@@ -617,8 +617,8 @@ df_logic_c_feel_safe_but_men_safety_25 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
@@ -638,8 +638,8 @@ df_logic_c_feel_safe_but_girls_safety_26 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
@@ -659,8 +659,8 @@ df_logic_c_feel_safe_but_boys_safety_27 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
