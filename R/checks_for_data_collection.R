@@ -365,7 +365,7 @@ df_logic_c_more_yield_but_also_crop_loss_13 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
+         i.check.reviewed = "1",
          i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
@@ -386,8 +386,8 @@ df_logic_c_no_inadequate_shelter_but_shelters_destroyed_14 <- df_tool_data |>
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
-         i.check.adjust_log = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "delete_log",
          i.check.so_sm_choices = "")  |> 
   batch_select_rename()
 
