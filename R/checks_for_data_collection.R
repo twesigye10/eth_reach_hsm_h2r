@@ -100,14 +100,14 @@ df_logic_c_enough_water_but_schedule_change_1 <- df_tool_data |>
   mutate(i.check.type = "change_response",
          i.check.name = "freq_not_enough_water_for_all_household_needs",
          i.check.current_value = freq_not_enough_water_for_all_household_needs,
-         i.check.value = "",
+         i.check.value = "freq_change_schedules_due_to_problems_with_your_water_situation",
          i.check.issue_id = "logic_c_enough_water_but_schedule_change_1",
          i.check.issue = glue("freq_not_enough_water_for_all_household_needs: {freq_not_enough_water_for_all_household_needs}, but freq_change_schedules_due_to_problems_with_your_water_situation: {freq_change_schedules_due_to_problems_with_your_water_situation}"),
          i.check.other_text = "",
          i.check.checked_by = "",
          i.check.checked_date = as_date(today()),
          i.check.comment = "", 
-         i.check.reviewed = "",
+         i.check.reviewed = "1",
          i.check.adjust_log = "",
          i.check.so_sm_choices = "") |> 
   batch_select_rename()
