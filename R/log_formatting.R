@@ -7,7 +7,8 @@ library(supporteR)
 
 # Read data and checking log 
 
-df_cleaning_log <- read_csv("inputs/combined_checks_h2r_eth.csv", col_types = cols(sheet = "c", index = "i"))
+df_cleaning_log <- read_csv("inputs/combined_checks_h2r_eth.csv", col_types = cols(sheet = "c", index = "i")) |> 
+  filter(reviewed %in% c("1"))
 
 # raw data
 loc_data <- "inputs/ETH2002_H2R_data.xlsx"
@@ -54,10 +55,12 @@ df_formatted_log <- df_cleaning_log |>
 # deletion log ------------------------------------------------------------
 
 df_deletion_log <- df_cleaning_log |> 
-  filter(type %in% c("remove_survey")) |> 
+  filter(!adjust_log %in% c("delete_log"), type %in% c("remove_survey")) |> 
   group_by(uuid) |> 
   filter(row_number() == 1) |> 
-  ungroup()
+  ungroup() |> 
+  select(uuid, enumerator_id, issue, type_of_issue = type, 
+         feedback = comment, changed = adjust_log)
 
 # enumerator performance --------------------------------------------------
 
