@@ -43,14 +43,15 @@ df_variable_summary <- df_survey |>
 
 # extract data ------------------------------------------------------------
 df_data_extract <- df_raw_data |> 
-  select(uuid = `_uuid`, enumerator_id)
+  select(uuid = `_uuid`, `enumerator ID` = enumerator_id)
 
 # log ---------------------------------------------------------------------
 
 df_formatted_log <- df_cleaning_log |> 
-  mutate(adjust_log = ifelse(adjust_log %in% c("delete_log"), "no", "yes")) |>  
-  select(uuid, enumerator_id, question.name = name, issue, type_of_issue = type, 
-         feedback = comment, changed = adjust_log, old.value = current_value, new.value = value)
+  mutate(int.adjust_log = ifelse(adjust_log %in% c("delete_log"), "no", "yes")) |>  
+  select(uuid, `enumerator ID` = enumerator_id, question.name = name, Issue = issue, 
+         `Type of Issue (Select from dropdown list)` = type, 
+         feedback = comment, changed = int.adjust_log, old.value = current_value, new.value = value)
   
 # deletion log ------------------------------------------------------------
 
@@ -59,9 +60,20 @@ df_deletion_log <- df_cleaning_log |>
   group_by(uuid) |> 
   filter(row_number() == 1) |> 
   ungroup() |> 
-  select(uuid, enumerator_id, issue, type_of_issue = type, 
-         feedback = comment, changed = adjust_log)
+  select(uuid, `enumerator ID` = enumerator_id, Issue = issue, `Type of Issue (Select from dropdown list)` = type, 
+         feedback = comment)
 
 # enumerator performance --------------------------------------------------
 
+
+
+
+# export sheets -----------------------------------------------------------
+
+
+rio::export(x = list(Summary = df_variable_summary,
+                     data_extract = df_data_extract,
+                     Logbook = df_formatted_log,
+                     "deletion log" = df_deletion_log), 
+            file = "outputs/eth_h2r_data_cleaning_logbook.xlsx")
 
