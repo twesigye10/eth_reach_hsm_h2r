@@ -30,10 +30,12 @@ cols_to_escape <- c("index", "start", "end", "today", "starttime",	"endtime", "_
                     "when_schools_last_opened")
 
 data_nms <- names(readxl::read_excel(path = loc_data, n_max = 2000))
-c_types <- ifelse(str_detect(string = data_nms, pattern = "_other$"), "text", "guess")
+c_types <- case_when(str_detect(string = data_nms, pattern = "crops_destroyed_by_conflict|when_schools_last_opened") ~ "date", 
+                        str_detect(string = data_nms, pattern = "_other$") ~ "text",
+                        TRUE ~ "guess")
 
 df_raw_data <- readxl::read_excel(path = loc_data, col_types = c_types) |> 
-  mutate(across(.cols = -c(contains(cols_to_escape)), 
+  mutate(across(.cols = -c(any_of(cols_to_escape)), 
                 .fns = ~ifelse(str_detect(string = ., 
                                           pattern = fixed(pattern = "N/A", ignore_case = TRUE)), "NA", .)))
 
@@ -53,7 +55,7 @@ df_cleaning_log_main <-  df_cleaning_log |>
 df_cleaning_step <- supporteR::cleaning_support(input_df_raw_data = df_raw_data,
                                               input_df_survey = df_survey,
                                               input_df_choices = df_choices,
-                                              input_df_cleaning_log = df_cleaning_log_main)
+                                              input_df_cleaning_log = df_cleaning_log_main |> head(20))
 
 df_cleaned_data <- df_cleaning_step |> 
   mutate(across(.cols = -c(any_of(cols_to_escape), matches("_age$|^age_|uuid")),
