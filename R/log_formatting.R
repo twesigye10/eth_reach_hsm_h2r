@@ -114,6 +114,5 @@ openxlsx::write.xlsx(x = list(Summary = df_variable_summary,
                              del_by_enum_time = df_deletion_by_enum_time), 
                     file = paste0("outputs/", butteR::date_file_prefix(), "_eth_h2r_data_cleaning_logbook.xlsx"))
 
-# openxlsx::write.xlsx()
-
+# exporting log alone
 write_csv(df_formatted_log, file = "outputs/Log_book.csv", na = "")
