@@ -64,16 +64,50 @@ df_deletion_log <- df_cleaning_log |>
          feedback = comment)
 
 # enumerator performance --------------------------------------------------
-
-
+# Number of surveys collected by enumerators
+df_surveys_by_enum <- df_raw_data |> 
+  group_by(enumerator_id) |> 
+  summarise(Number = n())
+# Number of changes by enumerators
+df_changes_by_enum <- df_cleaning_log |> 
+  filter(!adjust_log %in% c("delete_log")) |> 
+  group_by(enumerator_id) |> 
+  summarise(Number = n())
+# Number of changes by enumerators filtered by issues
+df_changes_by_enum_issue <- df_cleaning_log |> 
+  filter(!adjust_log %in% c("delete_log")) |> 
+  group_by(enumerator_id, issue_id) |> 
+  summarise(Number = n())
+# Number of deletions by enumerators
+df_deletion_by_enum <- df_cleaning_log |> 
+  filter(!adjust_log %in% c("delete_log"), type %in% c("remove_survey")) |> 
+  group_by(uuid) |> 
+  filter(row_number() == 1) |> 
+  ungroup() |> 
+  group_by(enumerator_id) |> 
+  summarise(Number = n())
+# Number of deletions due to time by enumerator
+df_deletion_by_enum_time <- df_cleaning_log |> 
+  filter(!adjust_log %in% c("delete_log"), type %in% c("remove_survey")) |> 
+  filter(issue_id %in% c("less_survey_time")) |> 
+  group_by(uuid) |> 
+  filter(row_number() == 1) |> 
+  ungroup() |> 
+  group_by(enumerator_id) |> 
+  summarise(Number = n())
 
 
 # export sheets -----------------------------------------------------------
 
 
-rio::export(x = list(Summary = df_variable_summary,
+writexl::write_xlsx(x = list(Summary = df_variable_summary,
                      data_extract = df_data_extract,
                      Logbook = df_formatted_log,
-                     "deletion log" = df_deletion_log), 
-            file = "outputs/eth_h2r_data_cleaning_logbook.xlsx")
+                     "deletion log" = df_deletion_log,
+                     surveys_by_enum = df_surveys_by_enum,
+                     changes_by_enum = df_changes_by_enum,
+                     changes_by_issue = df_changes_by_enum_issue,
+                     del_by_enum = df_deletion_by_enum,
+                     del_by_enum_time = df_deletion_by_enum_time), 
+            path = paste0("outputs/", butteR::date_file_prefix(), "_eth_h2r_data_cleaning_logbook.xlsx"))
 
