@@ -57,7 +57,7 @@ df_cleaning_log_main <-  df_cleaning_log |>
 df_cleaning_step <- supporteR::cleaning_support(input_df_raw_data = df_raw_data,
                                               input_df_survey = df_survey,
                                               input_df_choices = df_choices,
-                                              input_df_cleaning_log = df_cleaning_log_main |> head(10))
+                                              input_df_cleaning_log = df_cleaning_log_main)
 
 df_cleaned_data <- df_cleaning_step |> 
   mutate(across(.cols = -c(any_of(cols_to_escape), matches("_age$|^age_|uuid")),
