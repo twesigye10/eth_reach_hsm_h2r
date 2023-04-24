@@ -37,7 +37,9 @@ c_types <- case_when(str_detect(string = data_nms, pattern = "crops_destroyed_by
 df_raw_data <- readxl::read_excel(path = loc_data, col_types = c_types) |> 
   mutate(across(.cols = -c(any_of(cols_to_escape)), 
                 .fns = ~ifelse(str_detect(string = ., 
-                                          pattern = fixed(pattern = "N/A", ignore_case = TRUE)), "NA", .)))
+                                          pattern = fixed(pattern = "N/A", ignore_case = TRUE)), "NA", .))) |> 
+  mutate(int.crops_destroyed_by_conflict = format(crops_destroyed_by_conflict, "%Y/%m/%d" ), 
+         int.when_schools_last_opened = format(when_schools_last_opened, "%Y/%m/%d"))
 
 # tool
 loc_tool <- "inputs/ETH2002_H2R_tool.xlsx"
@@ -55,7 +57,7 @@ df_cleaning_log_main <-  df_cleaning_log |>
 df_cleaning_step <- supporteR::cleaning_support(input_df_raw_data = df_raw_data,
                                               input_df_survey = df_survey,
                                               input_df_choices = df_choices,
-                                              input_df_cleaning_log = df_cleaning_log_main |> head(20))
+                                              input_df_cleaning_log = df_cleaning_log_main |> head(10))
 
 df_cleaned_data <- df_cleaning_step |> 
   mutate(across(.cols = -c(any_of(cols_to_escape), matches("_age$|^age_|uuid")),
