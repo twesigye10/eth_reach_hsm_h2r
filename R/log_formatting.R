@@ -48,10 +48,13 @@ df_data_extract <- df_raw_data |>
 # log ---------------------------------------------------------------------
 
 df_formatted_log <- df_cleaning_log |> 
-  mutate(int.adjust_log = ifelse(adjust_log %in% c("delete_log"), "no", "yes")) |>  
-  select(uuid, `enumerator ID` = enumerator_id, question.name = name, Issue = issue, 
-         `Type of Issue (Select from dropdown list)` = type, 
-         feedback = comment, changed = int.adjust_log, old.value = current_value, new.value = value)
+  # mutate(int.adjust_log = ifelse(adjust_log %in% c("delete_log"), "no", "yes")) |> 
+  mutate(int.adjust_log = ifelse(adjust_log %in% c("delete_log"), "no", "yes"),
+         `enumerator ID` = enumerator_id, question.name = name, Issue = str_replace_all(string = issue, pattern = "\\[+.+\\]", replacement = ""), 
+         `Type of Issue` = type, feedback = comment, 
+         changed = int.adjust_log, old.value = current_value, new.value = value) |> 
+  select(uuid, `enumerator ID`, question.name, Issue, `Type of Issue`, 
+         feedback, changed, old.value, new.value)
   
 # deletion log ------------------------------------------------------------
 
@@ -100,14 +103,17 @@ df_deletion_by_enum_time <- df_cleaning_log |>
 # export sheets -----------------------------------------------------------
 
 
-writexl::write_xlsx(x = list(Summary = df_variable_summary,
-                     data_extract = df_data_extract,
-                     Logbook = df_formatted_log,
-                     "deletion log" = df_deletion_log,
-                     surveys_by_enum = df_surveys_by_enum,
-                     changes_by_enum = df_changes_by_enum,
-                     changes_by_issue = df_changes_by_enum_issue,
-                     del_by_enum = df_deletion_by_enum,
-                     del_by_enum_time = df_deletion_by_enum_time), 
-            path = paste0("outputs/", butteR::date_file_prefix(), "_eth_h2r_data_cleaning_logbook.xlsx"))
+openxlsx::write.xlsx(x = list(Summary = df_variable_summary,
+                             data_extract = df_data_extract,
+                             # Log_book = df_formatted_log,
+                             deletion_log = df_deletion_log,
+                             surveys_by_enum = df_surveys_by_enum,
+                             changes_by_enum = df_changes_by_enum,
+                             changes_by_issue = df_changes_by_enum_issue,
+                             del_by_enum = df_deletion_by_enum,
+                             del_by_enum_time = df_deletion_by_enum_time), 
+                    file = paste0("outputs/", butteR::date_file_prefix(), "_eth_h2r_data_cleaning_logbook.xlsx"))
 
+# openxlsx::write.xlsx()
+
+write_csv(df_formatted_log, file = "outputs/Log_book.csv", na = "")
