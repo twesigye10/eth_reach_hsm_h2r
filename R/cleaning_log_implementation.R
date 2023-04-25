@@ -65,22 +65,26 @@ df_cleaned_data <- df_cleaning_step |>
 
 # Add composite indicators at this stage ----------------------------------
 
-df_main_with_composites <- create_composite_indicators(input_df = df_cleaned_data)
+df_main_with_composites <- create_composite_indicators(input_df = df_cleaned_data) |> 
+  select(-starts_with("int."))
 
-# deletion log ------------------------------------------------------------
-
-df_deletion_log <- df_cleaning_log |> 
-  filter(type %in% c("remove_survey")) |> 
-  group_by(uuid) |> 
-  filter(row_number() == 1) |> 
-  ungroup()
+# # deletion log ------------------------------------------------------------
+# 
+# df_deletion_log <- df_cleaning_log |> 
+#   filter(type %in% c("remove_survey")) |> 
+#   group_by(uuid) |> 
+#   filter(row_number() == 1) |> 
+#   ungroup()
 
 # write final datasets out -----------------------------------------------
 
-list_of_clean_datasets <- list("Raw_main" = df_raw_data,
-                               "cleaning_log" = df_cleaning_log,
-                               "deletion_log" = df_deletion_log,
-                               "cleaned_data" = df_main_with_composites
+list_of_raw_datasets <- list("Raw_main" = df_raw_data |> select(-starts_with("int.")))
+
+openxlsx::write.xlsx(x = list_of_raw_datasets,
+                     file = paste0("outputs/", butteR::date_file_prefix(), 
+                                   "_raw_data_h2r_eth.xlsx"))
+
+list_of_clean_datasets <- list("cleaned_data" = df_main_with_composites
 )
 
 openxlsx::write.xlsx(x = list_of_clean_datasets,
@@ -88,6 +92,6 @@ openxlsx::write.xlsx(x = list_of_clean_datasets,
                                    "_clean_data_h2r_eth.xlsx"), 
                      overwrite = TRUE, keepNA = TRUE, na.string = "NA")
 
-openxlsx::write.xlsx(x = list_of_clean_datasets,
-                     file = paste0("inputs/clean_data_h2r_eth.xlsx"), 
-                     overwrite = TRUE, keepNA = TRUE, na.string = "NA")
+# openxlsx::write.xlsx(x = list_of_clean_datasets,
+#                      file = paste0("inputs/clean_data_h2r_eth.xlsx"), 
+#                      overwrite = TRUE, keepNA = TRUE, na.string = "NA")
