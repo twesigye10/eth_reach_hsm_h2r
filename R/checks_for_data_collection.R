@@ -4,6 +4,8 @@ library(lubridate)
 library(glue)
 library(supporteR)
 
+source("R/composite_indicators.R")
+
 # read data ---------------------------------------------------------------
 
 df_tool_data <- readxl::read_excel("inputs/ETH2002_H2R_data.xlsx") |>  
@@ -11,7 +13,10 @@ df_tool_data <- readxl::read_excel("inputs/ETH2002_H2R_data.xlsx") |>
          start = as_datetime(start),
          end = as_datetime(end)) |> 
   checks_add_extra_cols(input_enumerator_id_col = "enumerator_id",
-                        input_location_col = "loc_zone")
+                        input_location_col = "loc_zone") |> 
+  mutate(int.crops_destroyed_by_conflict = format(crops_destroyed_by_conflict, "%Y/%m/%d" ), 
+         int.when_schools_last_opened = format(when_schools_last_opened, "%Y/%m/%d")) |> 
+  create_composite_indicators()
 
 # tool
 
