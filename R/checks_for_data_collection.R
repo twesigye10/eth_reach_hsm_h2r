@@ -777,6 +777,108 @@ df_logic_c_humanitarian_food_but_no_assistance_32 <- df_tool_data |>
 add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_humanitarian_food_but_no_assistance_32")
 
 
+# extra checks during review by HQ ----------------------------------------
+
+# high fcs but main reason for moving was food
+df_logic_c_high_fcs_but_lack_food <- df_tool_data |> 
+  filter((i.fcs > 42), main_reason_left %in% c("lack_of_food")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "fcs_cereals",
+         i.check.current_value = as.character(fcs_cereals),
+         i.check.value = "NA",
+         i.check.issue_id = "logic_c_false_fcs_data",
+         i.check.issue = "suspected false fcs data",
+         i.check.other_text = "",
+         i.check.checked_by = "AT",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "") |>
+  slice(rep(1:n(), each = 9)) |> 
+  group_by(i.check.uuid, i.check.start_date, i.check.enumerator_id, i.check.type,  i.check.name,  i.check.current_value) |> 
+  mutate(rank = row_number(),
+         i.check.name = case_when(rank == 1 ~ "fcs_cereals",
+                                  rank == 2 ~ "fcs_meat", 
+                                  rank == 3 ~ "fcs_pulses", 
+                                  rank == 4 ~ "fcs_vegetable", 
+                                  rank == 5 ~ "fcs_fruits", 
+                                  rank == 6 ~ "fcs_condiments", 
+                                  rank == 7 ~ "fcs_dairy", 
+                                  rank == 8 ~ "fcs_sugar", 
+                                  TRUE ~ "fcs_oil"),
+         i.check.current_value = case_when(rank == 1 ~ as.character(fcs_cereals),
+                                           rank == 2 ~ as.character(fcs_meat),
+                                           rank == 3 ~ as.character(fcs_pulses), 
+                                           rank == 4 ~ as.character(fcs_vegetable), 
+                                           rank == 5 ~ as.character(fcs_fruits), 
+                                           rank == 6 ~ as.character(fcs_condiments), 
+                                           rank == 7 ~ as.character(fcs_dairy), 
+                                           rank == 8 ~ as.character(fcs_sugar), 
+                                           TRUE ~ as.character(fcs_oil))
+  ) |> 
+  dplyr::select(starts_with("i.check.")) |>
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = ""))
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_high_fcs_but_lack_food")
+
+# mismatch between FCS and HHS
+df_logic_c_fcs_and_hhs_mismatch <- df_tool_data |> 
+  filter((i.fcs_cat %in% c("Acceptable")), i.hhs_cat %in% c("Severe hunger")) |> 
+  mutate(i.check.type = "change_response",
+         i.check.name = "fcs_cereals",
+         i.check.current_value = as.character(fcs_cereals),
+         i.check.value = "NA",
+         i.check.issue_id = "logic_c_mismatch_btn_fcs_and_hhs",
+         i.check.issue = "mismatch between FCS and HHS",
+         i.check.other_text = "",
+         i.check.checked_by = "AT",
+         i.check.checked_date = as_date(today()),
+         i.check.comment = "",
+         i.check.reviewed = "1",
+         i.check.adjust_log = "",
+         i.check.so_sm_choices = "") |>
+  slice(rep(1:n(), each = 15)) |> 
+  group_by(i.check.uuid, i.check.start_date, i.check.enumerator_id, i.check.type,  i.check.name,  i.check.current_value) |> 
+  mutate(rank = row_number(),
+         i.check.name = case_when(rank == 1 ~ "fcs_cereals",
+                                  rank == 2 ~ "fcs_meat", 
+                                  rank == 3 ~ "fcs_pulses", 
+                                  rank == 4 ~ "fcs_vegetable", 
+                                  rank == 5 ~ "fcs_fruits", 
+                                  rank == 6 ~ "fcs_condiments", 
+                                  rank == 7 ~ "fcs_dairy", 
+                                  rank == 8 ~ "fcs_sugar", 
+                                  rank == 9 ~ "fcs_oil",
+                                  rank == 10 ~ "food_availability_30_days_before_leaving_settlement",
+                                  rank == 11 ~ "if_yes_food_availability_how_often",
+                                  rank == 12 ~ "sleep_hungry_30_days_before_leaving_settlement",
+                                  rank == 13 ~ "if_yes_sleep_hungry_how_often",
+                                  rank == 14 ~ "whole_day_and_night_no_food_30_days_before_leaving_settlement",
+                                  TRUE ~ "if_yes_whole_day_and_night_no_food_how_often"),
+         i.check.current_value = case_when(rank == 1 ~ as.character(fcs_cereals),
+                                           rank == 2 ~ as.character(fcs_meat),
+                                           rank == 3 ~ as.character(fcs_pulses), 
+                                           rank == 4 ~ as.character(fcs_vegetable), 
+                                           rank == 5 ~ as.character(fcs_fruits), 
+                                           rank == 6 ~ as.character(fcs_condiments), 
+                                           rank == 7 ~ as.character(fcs_dairy), 
+                                           rank == 8 ~ as.character(fcs_sugar), 
+                                           rank == 9 ~ as.character(fcs_oil), 
+                                           rank == 10 ~ as.character(food_availability_30_days_before_leaving_settlement), 
+                                           rank == 11 ~ as.character(if_yes_food_availability_how_often), 
+                                           rank == 12 ~ as.character(sleep_hungry_30_days_before_leaving_settlement), 
+                                           rank == 13 ~ as.character(if_yes_sleep_hungry_how_often), 
+                                           rank == 14 ~ as.character(whole_day_and_night_no_food_30_days_before_leaving_settlement), 
+                                           TRUE ~ as.character(if_yes_whole_day_and_night_no_food_how_often))
+  ) |> 
+  dplyr::select(starts_with("i.check.")) |>
+  rename_with(~str_replace(string = .x, pattern = "i.check.", replacement = "")) |> 
+  filter(!is.na(current_value))
+
+add_checks_data_to_list(input_list_name = "checks_output", input_df_name = "df_logic_c_fcs_and_hhs_mismatch")
+
+
 # combined  checks --------------------------------------------------------
 
 df_combined_checks <- bind_rows(checks_output) |> 
