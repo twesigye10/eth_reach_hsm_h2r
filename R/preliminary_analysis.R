@@ -1,6 +1,10 @@
 library(tidyverse)
 library(srvyr)
-library(supporteR)
+library(supporteR)  
+
+# packages to install incase
+# devtools::install_github("zackarno/butteR")
+# devtools::install_github("twesigye10/supporteR")
 
 # clean data
 data_path <- "inputs/clean_data_h2r_eth.xlsx"
