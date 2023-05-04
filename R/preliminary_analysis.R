@@ -37,7 +37,8 @@ full_analysis_long <- combined_analysis |>
          int.variable = ifelse(str_detect(string = variable, pattern = "^i\\."), str_replace(string = variable, pattern = "^i\\.", replacement = ""), variable)) |> 
   left_join(df_tool_data_support, by = c("int.variable" = "name")) |> 
   relocate(label, .after = variable) |> 
-  mutate(label = ifelse(is.na(label), variable, label),
+  mutate(select_type = ifelse(select_type %in% c("i.fcs", "i.hhs"), "integer", select_type),
+         label = ifelse(is.na(label), variable, label),
          `mean/pct` = ifelse(select_type %in% c("integer") & !str_detect(string = variable, pattern = "^i\\."), `mean/pct`, `mean/pct`*100),
          `mean/pct` = round(`mean/pct`, digits = 2)) |> 
   select(`Question`= label, 
