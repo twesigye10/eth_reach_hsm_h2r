@@ -36,15 +36,19 @@ df_main_analysis <- analysis_after_survey_creation(input_svy_obj = ref_svy,
 
 combined_analysis <- df_main_analysis
 
+# formatting the analysis, adding question labels
 full_analysis_long <- combined_analysis |> 
   mutate(variable = ifelse(is.na(variable) | variable %in% c(""), variable_val, variable),
          int.variable = ifelse(str_detect(string = variable, pattern = "^i\\."), str_replace(string = variable, pattern = "^i\\.", replacement = ""), variable)) |> 
   left_join(df_tool_data_support, by = c("int.variable" = "name")) |> 
   relocate(label, .after = variable) |> 
-  mutate(select_type = ifelse(select_type %in% c("i.fcs", "i.hhs"), "integer", select_type),
+  mutate(variable = ifelse(variable %in% c("i.fcs", "i.hhs"), str_replace(string = variable, pattern = "i.", replacement = "int."), variable),
+         select_type = ifelse(variable %in% c("int.fcs", "int.hhs"), "integer", select_type),
          label = ifelse(is.na(label), variable, label),
-         `mean/pct` = ifelse(select_type %in% c("integer") & !str_detect(string = variable, pattern = "^i\\."), `mean/pct`, `mean/pct`*100),
+         `mean/pct` = ifelse(select_type %in% c("integer") & !variable %in% c("i.fcs", "i.hhs") & !str_detect(string = variable, pattern = "^i\\."), `mean/pct`, `mean/pct`*100),
          `mean/pct` = round(`mean/pct`, digits = 2)) |> 
+  mutate(variable = ifelse(variable %in% c("int.fcs", "int.hhs"), str_replace(string = variable, pattern = "int.", replacement = "i."), variable),
+         label = ifelse(label %in% c("int.fcs", "int.hhs"), str_replace(string = label, pattern = "int.", replacement = "i."), label)) |> 
   select(`Question`= label, 
          variable, 
          `choices/options` = variable_val, 
