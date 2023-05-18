@@ -16,6 +16,13 @@ df_main_clean_data <- readxl::read_excel(path = data_path, sheet = "cleaned_data
 # tool
 df_survey <- readxl::read_excel("inputs/ETH2002_H2R_tool.xlsx", sheet = "survey") 
 
+
+# settlement level data ---------------------------------------------------
+
+# identify settlement level data
+
+# calculate mode for the data, taking care of protection indicators and select multiple
+
 df_main_clean_data |> 
   group_by(info_region, info_zone, info_woreda, info_kebele, info_settlement) 
   
@@ -23,4 +30,5 @@ df_main_clean_data |>
 df_main_clean_data |> 
   select(info_region, info_zone, info_woreda, info_kebele, info_settlement) |> 
   view()
-  
+
+# export the data
