@@ -39,12 +39,3 @@ create_composite_indicators <- function(input_df) {
     select(-c(starts_with("int.")))
 }
 
-mode_support <- function(x, na.rm = FALSE) {
-  
-  if(na.rm){ #if na.rm is TRUE, remove NA values from input x
-    x = x[!is.na(x)]
-  }
-  
-  val <- unique(x)
-  return(val[which.max(tabulate(match(x, val)))])
-}
