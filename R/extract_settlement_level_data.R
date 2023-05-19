@@ -19,16 +19,41 @@ df_survey <- readxl::read_excel("inputs/ETH2002_H2R_tool.xlsx", sheet = "survey"
 
 # settlement level data ---------------------------------------------------
 
-# identify settlement level data
+# identify settlement level indicators
+df_questions_dap <- readxl::read_excel("support_files/V6_REACH_ETH_2002_DAP_HSM_Northern_Ethiopia_August_2022_Translation.xlsx", sheet = "Quant_KI") |> 
+  filter(!is.na(`Questionnaire question`))
 
-# calculate mode for the data, taking care of protection indicators and select multiple
+df_survey_questions_level <- df_survey |> 
+  mutate(int.group = ifelse(str_detect(string = name, pattern = "^grp_"), name, NA_character_),
+         i.group = int.group) |> 
+  fill(i.group)
 
-df_main_clean_data |> 
+# all settlement level questions
+df_questions_settlement_level <- df_survey_questions_level |> 
+  filter(str_detect(string = i.group, pattern = "grp_shocks|grp_displacement|grp_fs|grp_livelihoods|grp_agriculture|grp_marketsgrp_things_available_in_the_market|grp_shelter|grp_health|grp_education|grp_wash|grp_protection|grp_assistance"),
+         !str_detect(string = name, pattern = "_other$"),
+         !str_detect(string = type, pattern = "group|text|^note$")
+         ) |> 
+  select(type, name, `label::english`, i.group)
+
+# select multiple questions
+df_questions_settlement_level_sm <- df_questions_settlement_level |> 
+  filter(str_detect(string = type, pattern = "select_multiple"))
+
+# select settlement level data
+df_settlement_level_data <- df_main_clean_data |> 
+  select(info_region, info_zone, info_woreda, info_kebele, info_settlement, matches(paste(df_questions_settlement_level$name, collapse = "|"))) |> 
+  select(!df_questions_settlement_level_sm$name, -ends_with("_other"))
+
+
+# calculate mode for the indicators ---------------------------------------
+
+# taking care of protection indicators and select multiple
+# also even number of KIs for finding mode
+df_settlement_level_data |> 
   group_by(info_region, info_zone, info_woreda, info_kebele, info_settlement) 
   
 
-df_main_clean_data |> 
-  select(info_region, info_zone, info_woreda, info_kebele, info_settlement) |> 
-  view()
+
 
 # export the data
