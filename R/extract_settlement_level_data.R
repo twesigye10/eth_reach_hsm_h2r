@@ -3,7 +3,35 @@ library(supporteR)
 
 # devtools::install_github("twesigye10/supporteR")
 
-source("R/composite_indicators.R")
+# mode_support <- function(x, na.rm = FALSE) {
+#   
+#   if(na.rm){ #if na.rm is TRUE, remove NA values from input x
+#     x = x[!is.na(x)]
+#   }
+#   
+#   val <- unique(x)
+#   return(val[which.max(tabulate(match(x, val)))])
+# }
+
+mode_support <- function(x, na.rm = FALSE) {
+  
+  if(na.rm){ #if na.rm is TRUE, remove NA values from input x
+    x = x[!is.na(x)]
+  }
+  # extract unique values
+  val <- unique(x)
+  # extract frequencies for values
+  data_freqs <- tabulate(match(x, val))
+  # max freq
+  max_data_val <- max(data_freqs) 
+  # if ties, no consensus
+  if (length(data_freqs[data_freqs >= max_data_val]) > 1) {
+    return("NC")
+  } else{
+    return(val[which.max(data_freqs)])
+  }
+  
+}
 
 # clean data
 data_path <- "inputs/clean_data_h2r_eth.xlsx"
@@ -50,10 +78,11 @@ df_settlement_level_data <- df_main_clean_data |>
 
 # taking care of protection indicators and select multiple
 # also even number of KIs for finding mode
-df_settlement_level_data |> 
-  group_by(info_region, info_zone, info_woreda, info_kebele, info_settlement) 
-  
-
-
+location_cols <- c("info_region", "info_zone", "info_woreda", "info_kebele", "info_settlement")
+df_settlement_level_data_processed <- df_settlement_level_data |> 
+  mutate(across(.fns = ~as.character(.x))) |> 
+  group_by(info_region, info_zone, info_woreda, info_kebele, info_settlement) |> 
+  dplyr::summarise(across(.cols = -any_of(location_cols), .fns = ~mode_support(.x, na.rm = T)))
 
 # export the data
+write_csv(df_settlement_level_data_processed, paste0("outputs/settlement_level_data_h2r_eth.csv"), na="")
