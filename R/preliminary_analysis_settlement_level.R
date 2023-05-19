@@ -12,7 +12,7 @@ data_path <- "inputs/clean_data_settlement_level_h2r_eth.xlsx"
 data_nms <- names(readxl::read_excel(path = data_path, n_max = 200))
 c_types <- ifelse(str_detect(string = data_nms, pattern = "_other$"), "text", "guess")
 
-df_main_clean_data <- readxl::read_excel(path = data_path, col_types = c_types, na = "NC")
+df_main_clean_data <- readxl::read_excel(path = data_path, col_types = c_types, na = "NA")
 
 # tool
 df_survey <- readxl::read_excel("inputs/ETH2002_H2R_tool.xlsx", sheet = "survey") 
