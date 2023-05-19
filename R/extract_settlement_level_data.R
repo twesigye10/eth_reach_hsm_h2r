@@ -3,17 +3,7 @@ library(supporteR)
 
 # devtools::install_github("twesigye10/supporteR")
 
-# mode_support <- function(x, na.rm = FALSE) {
-#   
-#   if(na.rm){ #if na.rm is TRUE, remove NA values from input x
-#     x = x[!is.na(x)]
-#   }
-#   
-#   val <- unique(x)
-#   return(val[which.max(tabulate(match(x, val)))])
-# }
-
-mode_support <- function(x, na.rm = FALSE) {
+mode_with_nc <- function(x, na.rm = FALSE) {
   
   if(na.rm){ #if na.rm is TRUE, remove NA values from input x
     x = x[!is.na(x)]
