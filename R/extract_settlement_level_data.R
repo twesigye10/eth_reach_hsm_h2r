@@ -76,3 +76,20 @@ df_settlement_level_data_processed <- df_settlement_level_data |>
 
 # export the data
 write_csv(df_settlement_level_data_processed, paste0("outputs/", butteR::date_file_prefix(),"_settlement_level_data_h2r_eth.csv"), na="")
+
+
+# extract list and numbers of kebeles and settlements ---------------------
+
+# kebele
+df_no_kebeles <- df_main_clean_data |> 
+  select(info_woreda, info_kebele) |> 
+  unique() |> 
+  group_by(info_woreda) |> 
+  summarise(number_of_kebeles = n())
+
+# settlement
+df_no_settlements <- df_main_clean_data |> 
+  select(info_woreda, info_kebele, info_settlement) |> 
+  unique() |>
+  group_by(info_woreda, info_kebele) |> 
+  summarise(number_of_settlements = n())
