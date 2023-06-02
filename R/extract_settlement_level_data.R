@@ -33,7 +33,11 @@ df_main_clean_data <- readxl::read_excel(path = data_path, sheet = "cleaned_data
 
 # tool
 df_survey <- readxl::read_excel("inputs/ETH2002_H2R_tool.xlsx", sheet = "survey") 
+df_choices <- readxl::read_excel("inputs/ETH2002_H2R_tool.xlsx", sheet = "choices") 
 
+df_choices_support <- df_choices |> 
+  filter(list_name %in% c("woreda_mv_list", "kebele_mv_list")) |> 
+  select(name, label = `label::english`)
 
 # settlement level data ---------------------------------------------------
 
@@ -85,11 +89,26 @@ df_no_kebeles <- df_main_clean_data |>
   select(info_woreda, info_kebele) |> 
   unique() |> 
   group_by(info_woreda) |> 
-  summarise(number_of_kebeles = n())
+  summarise(number_of_kebeles = n()) |> 
+  mutate(woreda_label = recode(info_woreda, !!!setNames(df_choices_support$label, df_choices_support$name)),
+         ) |> 
+  relocate(woreda_label, .after = info_woreda)
 
 # settlement
 df_no_settlements <- df_main_clean_data |> 
   select(info_woreda, info_kebele, info_settlement) |> 
   unique() |>
   group_by(info_woreda, info_kebele) |> 
-  summarise(number_of_settlements = n())
+  summarise(number_of_settlements = n()) |> 
+  mutate(woreda_label = recode(info_woreda, !!!setNames(df_choices_support$label, df_choices_support$name)),
+         kebele_label = recode(info_kebele, !!!setNames(df_choices_support$label, df_choices_support$name))
+  ) |> 
+  relocate(woreda_label, .after = info_woreda) |> 
+  relocate(kebele_label, .after = info_kebele)
+
+list_data <- list("kebeles_per_woreda" = df_no_kebeles,
+                  "settlements_per_kebele" = df_no_settlements)
+
+openxlsx::write.xlsx(x = list_data,
+                     file = paste0("outputs/", butteR::date_file_prefix(), 
+                                   "_kebeles_settlements_table_h2r_eth.xlsx"))
