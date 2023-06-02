@@ -48,7 +48,7 @@ df_survey_questions_level <- df_survey |>
 
 # all settlement level questions
 df_questions_settlement_level <- df_survey_questions_level |> 
-  filter(str_detect(string = i.group, pattern = "grp_shocks|grp_displacement|grp_fs|grp_livelihoods|grp_agriculture|grp_marketsgrp_things_available_in_the_market|grp_shelter|grp_health|grp_education|grp_wash|grp_protection|grp_assistance"),
+  filter(str_detect(string = i.group, pattern = "grp_shocks|grp_displacement|grp_fs|grp_livelihoods|grp_agriculture|grp_markets|grp_things_available_in_the_market|grp_shelter|grp_health|grp_education|grp_wash|grp_protection|grp_assistance"),
          !str_detect(string = name, pattern = "_other$"),
          !str_detect(string = type, pattern = "group|text|^note$")
          ) |> 
@@ -72,7 +72,7 @@ location_cols <- c("info_region", "info_zone", "info_woreda", "info_kebele", "in
 df_settlement_level_data_processed <- df_settlement_level_data |> 
   mutate(across(.fns = ~as.character(.x))) |> 
   group_by(info_region, info_zone, info_woreda, info_kebele, info_settlement) |> 
-  dplyr::summarise(across(.cols = -any_of(location_cols), .fns = ~mode_support(.x, na.rm = T)))
+  dplyr::summarise(across(.cols = -any_of(location_cols), .fns = ~mode_with_nc(.x, na.rm = T)))
 
 # export the data
-write_csv(df_settlement_level_data_processed, paste0("outputs/settlement_level_data_h2r_eth.csv"), na="")
+write_csv(df_settlement_level_data_processed, paste0("outputs/", butteR::date_file_prefix(),"_settlement_level_data_h2r_eth.csv"), na="")
