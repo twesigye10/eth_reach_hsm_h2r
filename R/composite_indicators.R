@@ -17,10 +17,10 @@ create_composite_indicators <- function(input_df) {
            int.freq_day_and_night_no_food = case_when(if_yes_whole_day_and_night_no_food_how_often %in% c("rarely") ~ 0,
                                                       if_yes_whole_day_and_night_no_food_how_often %in% c("sometimes") ~ 1,
                                                       if_yes_whole_day_and_night_no_food_how_often %in% c("often") ~ 2),
-           i.hhs = (int.freq_no_food_lack_resources + int.freq_sleep_hungry + int.freq_day_and_night_no_food),
-           i.hhs_cat = case_when(i.hhs <= 1 ~ "Little to no hunger",
-                                 i.hhs <= 3 ~ "Moderate hunger",
-                                 i.hhs <= 6 ~ "Severe hunger"),
+           # i.hhs = (int.freq_no_food_lack_resources + int.freq_sleep_hungry + int.freq_day_and_night_no_food),
+           # i.hhs_cat = case_when(i.hhs <= 1 ~ "Little to no hunger",
+           #                       i.hhs <= 3 ~ "Moderate hunger",
+           #                       i.hhs <= 6 ~ "Severe hunger"),
            int.displacement_time = lubridate::time_length(date_arrived_current_location - date_last_in_settlement, unit = "day"),
            i.displacement_time = case_when(int.displacement_time <= 5 ~ "days_0_5",
                                            int.displacement_time <= 10 ~ "days_6_10",
@@ -36,6 +36,14 @@ create_composite_indicators <- function(input_df) {
                                             freq_displacements <= 5 ~ "freq_3_5",
                                             freq_displacements > 5 ~ "freq_6+")
     ) |> 
+    rowwise() |> 
+    mutate( 
+      i.hhs = sum(c_across(int.freq_no_food_lack_resources:int.freq_day_and_night_no_food), na.rm = T),
+      i.hhs_cat = case_when(i.hhs <= 1 ~ "Little to no hunger",
+                            i.hhs <= 3 ~ "Moderate hunger",
+                            i.hhs <= 6 ~ "Severe hunger")
+    ) |>
+    ungroup() |>
     select(-c(starts_with("int.")))
 }
 
