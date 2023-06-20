@@ -44,6 +44,8 @@ create_composite_indicators <- function(input_df) {
                             i.hhs <= 6 ~ "Severe hunger")
     ) |>
     ungroup() |>
+    relocate(i.hhs, .after = int.freq_day_and_night_no_food) |> 
+    relocate(i.hhs_cat, .after = i.hhs) |> 
     select(-c(starts_with("int.")))
 }
 
